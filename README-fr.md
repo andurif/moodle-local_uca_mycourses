@@ -18,7 +18,7 @@ Installation
 - Avec git:
 > git clone https://github.com/andurif/moodle-local_uca_mycourses.git local/uca_mycourses
 
-- En téléchargement:
+- Téléchargement:
 > Télécharger le zip depuis https://github.com/andurif/moodle-local_uca_mycourses/archive/master.zip, dézipper l'archive dans le dossier local/ et renommer le si besoin le dossier en "uca_mycourses".
   
 2. Installation du bloc
@@ -26,7 +26,7 @@ Installation
 - Avec git:
 > git clone https://github.com/andurif/moodle-block_uca_mycourses.git blocks/uca_mycourses
 
-- En téléchargement:
+- Téléchargement:
 > Télécharger le zip depuis https://github.com/andurif/moodle-block_uca_mycourses/archive/master.zip, dézipper l'archive dans le dossier blocks/ et renommer le si besoin le dossier en "uca_mycourses".
 
 3. Aller sur la page de notifications pour finaliser l'installation du plugin.
