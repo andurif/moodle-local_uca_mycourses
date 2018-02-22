@@ -1,0 +1,341 @@
+{{#message}}
+    <div class="alert alert-{{type}}">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {{{text}}}
+    </div>
+{{/message}}
+<div class="row col-xs-12 bookmarks_page">
+    <input type="hidden" value="{{ json_courses }}" id="json_courses">
+    <input type="hidden" value="{{ json_bookmarks }}" id="json_bookmarks">
+
+    <div class="col-xs-6" style="overflow-y: auto; max-height: 600px;">
+        <h3>{{#str}}bookmarks:my_courses, local_uca_mycourses{{/str}}</h3>
+        <hr/>
+        {{#has_courses}}
+            <div id="jstree_courses" class="col-xs-11 jstree" rel="json_courses"></div>
+        {{/has_courses}}
+        {{^has_courses}}
+            <div class="alert alert-danger">{{#str}}bookmarks:no_course, local_uca_mycourses{{/str}}</div>
+        {{/has_courses}}
+    </div>
+    <div class="col-xs-6" >
+        <h3>{{#str}}bookmarks:list, local_uca_mycourses{{/str}}</h3>
+        <hr/>
+
+        <div class="alert alert-warning">
+            <i class="material-icons">warning</i> {{#str}}bookmarks:info, local_uca_mycourses{{/str}}
+        </div>
+        <form id="bookmarks_form" action="{{#uca_url}}/local/uca_mycourses/bookmarks.php{{/uca_url}}" method="post">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="show_bookmarks" {{#show_bookmarks}}checked="checked"{{/show_bookmarks}}> {{#str}}bookmarks:show_in_block, local_uca_mycourses{{/str}}
+                </label>
+            </div>
+            <input type="hidden" name="bookmarks_tree_json" id="bookmarks_tree_json" >
+            <div class="pull-right">
+                <input type="submit" class="btn btn-primary" value="{{#str}}savechanges{{/str}}" id="valid" >
+                <input type="reset" class="btn" value="{{#str}}cancel{{/str}}" id="cancel" >
+            </div>
+        </form>
+        <div id="jstree_bookmarks" class="col-xs-11 jstree row" rel="json_bookmarks"></div>
+
+    </div>
+
+    <div id="dialog-confirm" title="{{#str}}bookmarks:validation, local_uca_mycourses{{/str}}">
+        <p><i class="material-icons" style="float:left; margin-right:15px;">warning</i>{{#str}}bookmarks:confirm, local_uca_mycourses{{/str}}</p>
+    </div>
+
+</div>
+<script type="application/javascript">
+//    $ = jQuery.noConflict();
+    $(document).ready(
+        function ($)
+        {
+            $("#dialog-confirm").hide();
+
+            /**
+             * Jstree init
+             * */
+            $("#jstree_courses").jstree({
+                "core" : {
+                    "data" : jQuery.parseJSON($("#json_courses").val()),
+                    "multiple": true,
+                    "check_callback" : function(operation, node, node_parent, node_position, more) {
+                        if (operation === "move_node") {
+                            return false;
+                        }
+                        if(operation == "delete_node") {
+                            return false;
+                        }
+                    },
+                },
+                "types": {
+                    "category": {
+                        "icon" : "{{#uca_url}}/pix/i/withsubcat.png{{/uca_url}}"
+                    },
+                    "course" : {
+                        "icon" : "{{#uca_url}}/pix/i/course.png{{/uca_url}}"
+                    },
+                    "default": {
+                        "icon" : "{{#uca_url}}/pix/i/withsubcat.png{{/uca_url}}"
+                    },
+                },
+                "plugins": ["dnd", "show_bookmark", "types"],
+            });
+
+            $("#jstree_bookmarks").jstree({
+                "core" : {
+                    "data" : jQuery.parseJSON($("#json_bookmarks").val()),
+                    "multiple": true,
+                    "check_callback" : function(operation, node, node_parent, node_position, more) {
+                        if (operation === "move_node") {
+                            if(node.type == "root") return false;
+                            if(node.type == "folder" && node_parent.type != "root") return false;
+                            if(node.type == "bookmark" && node_parent.type == "bookmark") return false;
+                            return true;
+                        }
+                        if(operation === "copy_node") {
+                            datas = jQuery.parseJSON(node.data);
+                            if(node.type == "category") return false;  //We try to copy a course category => not possible
+                            if(node_parent.id == "#") return false;  //We try to copy the root node => not possible
+                            if(node_parent.type == "bookmark") return false;  //We try to copy a bookmark under another bookmark => not possible
+                            if(is_bookmarked(datas)) return false; //We try to copy a bookmark we have already => not possible
+                            return true;
+                        }
+                        return true;  //Allow all other operations
+                    },
+                },
+                "types": {
+                    "root": {
+                        "icon" : "{{#uca_url}}/pix/i/info.png{{/uca_url}}"
+                    },
+                    "folder": {
+                        "icon" : "{{#uca_url}}/pix/i/folder.png{{/uca_url}}"
+                    },
+                    "bookmark" : {
+                        "icon" : "{{#uca_url}}/pix/i/course.png{{/uca_url}}"
+                    },
+                    "default": {
+                        "icon" : "{{#uca_url}}/pix/i/course.png{{/uca_url}}"
+                    },
+                },
+                "plugins": ["dnd", "contextmenu", "show_course_name", "types"],
+                "contextmenu" : {
+                    "items" : get_custom_bookmarks_menu
+                }
+            });
+
+            $("#jstree_bookmarks").on("loaded.jstree", function() {
+                $("#jstree_bookmarks").jstree("open_all");
+            });
+            $("#jstree_courses").on("loaded.jstree", function() {
+                $("#jstree_courses").jstree("open_all");
+            });
+            $('.jstree').bind("select_node.jstree", function (e, data) {
+                data.instance.toggle_node(data.node);
+            });
+
+
+            /**
+             * Save the bookmarks
+             */
+            $("#bookmarks_form").submit(function(e) {
+                e.preventDefault();
+                $("#dialog-confirm").dialog({
+                    resizable: false,
+                    height: "auto",
+                    width: 400,
+                    modal: true,
+                    show: {
+                        effect: "blind",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "blind",
+                        duration: 500
+                    },
+                    buttons: {
+                        "{{#str}}confirm{{/str}}": function () {
+                            $("#bookmarks_tree_json").val(JSON.stringify($("#jstree_bookmarks").jstree(true)
+                                    .get_json("#", { flat : false, no_state : true, no_a_attr : true, no_li_attr : true, no_a_id : true})));
+                            $("#bookmarks_form").unbind("submit");
+                            $("#bookmarks_form").submit();
+                        },
+                        "{{#str}}cancel{{/str}}": function () {
+                            $(this).dialog("close");
+                        }
+                    }});
+            });
+
+            /**
+             * Cancel
+             */
+            $("#cancel").click(function(e) {
+                e.preventDefault();
+                $("#jstree_bookmarks").jstree(true).refresh();
+            });
+
+
+            /**
+             * Check if the course is already in our bookmarks. If it is, we disable the drag and drop.
+             * @param node_datas datas about the node in the jstree
+             * @return true if it is a bookmark and else in other cases.
+             */
+            function is_bookmarked(node_datas)
+            {
+                var bookmarked = false;
+                $(".jstree-leaf").each(function() {
+                    treeInst = $("#jstree_bookmarks").jstree(true);
+                    tree_node_datas = treeInst.get_node($(this).attr("id")).data;
+                    if(tree_node_datas != null) {
+                        if(tree_node_datas.id == node_datas.id) {
+                            bookmarked = true;
+                            return false;
+                        }
+                    }
+                });
+
+                return bookmarked;
+            }
+
+            /**
+             * Constructor of the jstree menu.
+             * @param node the node of the jstree where we open the menu.
+             */
+            function get_custom_bookmarks_menu(node)
+            {
+                var items = {
+                    "create" : {
+                        "separator_before"	: false,
+                        "separator_after"	: true,
+                        "_disabled"			: false,
+                        "label"				: "{{#str}}bookmarks:add_folder, local_uca_mycourses{{/str}}",
+                        "icon"				: "{{#uca_url}}/pix/t/add.png{{/uca_url}}",
+                        "action"			: function (data) {
+                            var inst = $.jstree.reference(data.reference), obj = inst.get_node(data.reference);
+                            //We create the node with the type 'folder'
+                            inst.create_node(obj, {type : "folder"}, "last", function (new_node) {
+                                new_node.text = "{{#str}}bookmarks:new_folder, local_uca_mycourses{{/str}}";
+                                new_node.type = "folder";
+                                setTimeout(function () {
+                                    inst.edit(new_node);
+                                },300);
+                            });
+                        }
+                    },
+                    "rename" : {
+                        "separator_before"	: false,
+                        "separator_after"	: false,
+                        "_disabled"			: false,
+                        "label"				: "{{#str}}rename{{/str}}",
+                        "icon"				: "{{#uca_url}}/pix/i/edit.png{{/uca_url}}",
+                        "action"			: function (data) {
+                            var inst = $.jstree.reference(data.reference), obj = inst.get_node(data.reference);
+                            inst.edit(obj);
+                        }
+                    },
+                    "remove" : {
+                        "separator_before"	: false,
+                        "separator_after"	: false,
+                        "_disabled"			: false,
+                        "label"				: (node.type == "folder") ? "{{#str}}bookmarks:delete_folder, local_uca_mycourses{{/str}}": "{{#str}}bookmarks:delete, local_uca_mycourses{{/str}}",
+                        "icon"				: "{{#uca_url}}/pix/i/delete.png{{/uca_url}}",
+                        "action"			: function (data) {
+                            var inst = $.jstree.reference(data.reference), obj = inst.get_node(data.reference);
+                            if(inst.is_selected(obj)) {
+                                inst.delete_node(inst.get_selected());
+                            }
+                            else {
+                                inst.delete_node(obj);
+                            }
+                        }
+                    },
+                };
+
+                //We remove some options of the menu in function of the node.
+                if(node.type == "root")
+                {
+                    delete items.rename;
+                    delete items.remove;
+                }
+                if(node.type == "folder")
+                {
+                    delete items.create;
+                }
+                if(node.type == "bookmark")
+                {
+                    delete items.create;
+                }
+
+                return items;
+            }
+
+            /**
+             * We create the bookmark node. We add the type 'bookmark' on this node and we select it to edit its name.
+             */
+            $("#jstree_bookmarks").on("copy_node.jstree", function(e, obj) {
+                obj.node.data = JSON.parse(obj.original.data);
+                obj.node.type = "bookmark";
+                $('#jstree_bookmarks').jstree(true).edit(obj.node);
+            });
+
+            /**
+             * Double click on a folder => edit the name.
+             */
+            $("#jstree_bookmarks").on("dblclick",".jstree-anchor", function (e) {
+                var inst = $.jstree.reference(this), node = inst.get_node(this);
+                if(node.type == "folder" || node.type == "bookmark") {
+                    setTimeout(function () {
+                        inst.edit(node);
+                    },300);
+                }
+            });
+        }
+    );
+
+    /**
+     * Jstree plugin used to add the name of the course before we added it in our bookmarks.
+     * @param options options of the node
+     * @param parent the node parent
+     */
+    $.jstree.plugins.show_course_name = function (options, parent) {
+        this.redraw_node = function(obj, deep, callback, force_draw) {
+            obj = parent.redraw_node.call(this, obj, deep, callback, force_draw);
+            if (obj) {
+                node = this.get_node(obj.id);
+                if(node && node.data != null) {
+                    if(node.type == "bookmark") {
+                        var urlshow = '{{#uca_url}}/course/view.php, {"id":"COURSE"}{{/uca_url}}';
+                        jQuery(obj).append('<i class="info_name"><small>('+node.data.fullname+')</small></i>' +
+                                '<a style="margin-left: 30px;" href="'+urlshow.replace("COURSE", node.data.id)+'"><span class="badge badge-info"> {{#str}}bookmarks:access_course, local_uca_mycourses{{/str}}</span></a>');
+                    }
+                }
+            }
+            return obj;
+        };
+    };
+
+    /**
+     * Jstree plugin used to add an icon to show the bookmarks in the list of our courses.
+     * @param options options of the node
+     * @param parent the node parent
+     */
+    $.jstree.plugins.show_bookmark = function (options, parent) {
+        this.redraw_node = function(obj, deep, callback, force_draw) {
+            obj = parent.redraw_node.call(this, obj, deep, callback, force_draw);
+            if (obj) {
+                var node = this.get_node(jQuery(obj).attr("id"));
+                if(node) {
+                    datas = JSON.parse(node.data);
+                    if(node.type == "course" && datas.is_bookmarked) {
+                        jQuery(obj).append("<i style='margin-left: 10px; font-size: 16px;' class='material-icons'>star_rate</i>");
+                    }
+                }
+            }
+            return obj;
+        };
+    };
+
+</script>

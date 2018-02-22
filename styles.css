@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css?family=Merriweather+Sans|Signika|Material+Icons|Raleway:100');
+
+.bookmarks_page .col-xs-6 {
+    float: left;
+    width: 50%;
+}
+
+.jstree-default a {
+    white-space:normal !important; height: auto;
+}
+
+.jstree-anchor {
+    height: auto !important;
+}
+
+.jstree-default li > ins {
+    vertical-align:top;
+}
+
+.jstree-leaf {
+    height: auto !important;
+}
+
+.jstree-leaf a{
+    height: auto !important;
+}
+
+.info_name {
+    white-space:normal !important; height: auto;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.jumbotron {
+    padding: 1rem;
+}
+
+.jumbotron h6 {
+    cursor: pointer;
+}
+
+.list_view {
+    padding-left: 25px;
+}

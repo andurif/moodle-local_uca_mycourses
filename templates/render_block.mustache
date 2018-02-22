@@ -1,0 +1,192 @@
+{{#visible}}
+    {{#show_bookmarks}}
+        {{#json_bookmarks}}
+            <div class="jumbotron">
+                <h6 data-toggle="collapse" href="#jstree_my_bookmarks"><strong>{{#str}}my_courses:bookmarks, local_uca_mycourses{{/str}}</strong></h6>
+                <a class="pull-right" href="{{#uca_url}}/local/uca_mycourses/bookmarks.php{{/uca_url}}">{{#str}}bookmarks:manage, local_uca_mycourses{{/str}}</a><br/>
+                <input type="hidden" value="{{ json_bookmarks }}" id="json_my_bookmarks">
+                <div id="jstree_my_bookmarks" class="jstree collapse in" style="overflow: auto;" rel="json_my_bookmarks"></div>
+            </div>
+        {{/json_bookmarks}}
+        <hr/>
+        <h6><strong>{{#str}}my_courses:all, local_uca_mycourses{{/str}}</strong></h6>
+    {{/show_bookmarks}}
+
+    <div class="pull-right">
+        <a href="#" class="change_view" data-target="tree">{{#str}}tree_view, block_uca_mycourses{{/str}}</a> | <a href="#" class="change_view" data-target="list">{{#str}}list_view, block_uca_mycourses{{/str}}</a>
+    </div>
+    <br/>
+    {{#json_courses}}
+        <input type="hidden" value="{{ json_courses }}" id="json_my_courses">
+        <div id="jstree_my_courses" class="jstree" style="overflow: auto;" rel="json_my_courses"></div>
+    {{/json_courses}}
+    {{^json_courses}}
+        <ul class="list_view">
+            {{#courses}}
+                <li style="list-style-image: url({{#uca_url}}/pix/i/course.png{{/uca_url}});">
+                    <a class='title' href='{{#uca_url}}/course/view.php, {"id":{{id}}}{{/uca_url}}'>{{fullname}}</a>
+                    {{#is_bookmark}}<i style='margin-left: 10px; font-size: 16px;' class="material-icons">star_rate</i>{{/is_bookmark}}
+                </li>
+            {{/courses}}
+        </ul>
+    {{/json_courses}}
+    {{^show_bookmarks}}
+        <a class="pull-right" href="{{#uca_url}}/local/uca_mycourses/bookmarks.php{{/uca_url}}">{{#str}}bookmarks:manage, local_uca_mycourses{{/str}}</a><br/>
+    {{/show_bookmarks}}
+
+    <script type="application/javascript">
+        $(document).ready(
+                function ($)
+                {
+                    if($("#jstree_my_courses").length > 0) {
+                        $("#jstree_my_courses").jstree({
+                            "core": {
+                                "data": jQuery.parseJSON($("#json_my_courses").val())
+                            },
+                            "types": {
+                                "category": {
+                                    "icon": "{{#uca_url}}/pix/i/withsubcat.png{{/uca_url}}"
+                                },
+                                "course": {
+                                    "icon": "{{#uca_url}}/pix/i/course.png{{/uca_url}}"
+                                },
+                                "default": {
+                                    "icon": "{{#uca_url}}/pix/i/withsubcat.png{{/uca_url}}"
+                                },
+                            },
+                            "plugins": ["link_course", "types", "show_bookmark"],
+                        });
+
+                        $('#jstree_my_courses').bind("select_node.jstree", function (e, data) {
+                            data.instance.toggle_node(data.node);
+                            if(data.node.children.length == 1) {
+                                data.instance.toggle_node(data.node.children[0]);
+                            }
+                        });
+                    }
+
+                    if($("#jstree_my_bookmarks").length > 0) {
+                        $("#jstree_my_bookmarks").jstree({
+                            "core" : {
+                                "data": jQuery.parseJSON($("#json_my_bookmarks").val())
+                            },
+                            "types": {
+                                "root": {
+                                    "icon" : "{{#uca_url}}/pix/i/info.png{{/uca_url}}"
+                                },
+                                "folder": {
+                                    "icon" : "{{#uca_url}}/pix/i/folder.png{{/uca_url}}"
+                                },
+                                "bookmark" : {
+                                    "icon" : "{{#uca_url}}/pix/i/course.png{{/uca_url}}"
+                                },
+                                "default": {
+                                    "icon" : "{{#uca_url}}/pix/i/course.png{{/uca_url}}"
+                                },
+                            },
+                            "plugins": ["link_bookmark", "types"],
+                        });
+
+                        $('#jstree_my_bookmarks').bind("select_node.jstree", function (e, data) {
+                            data.instance.toggle_node(data.node);
+                        });
+                    }
+
+                    $("#jstree_my_courses").on("loaded.jstree", function() {
+                        $("#jstree_my_courses").jstree("select_node", "ul > li:first");
+                    });
+                    $("#jstree_my_bookmarks").on("loaded.jstree", function() {
+                        $("#jstree_my_bookmarks").jstree("open_all");
+                    });
+
+                    //Click to change the view of the bookmarks.
+                    $('.change_view').click(function(e) {
+                        var target = $(e.target).attr('data-target');
+                        $.ajax({
+                            type: 'POST',
+                            url: '{{#uca_url}}/local/uca_mycourses/ajax.php'{{/uca_url}},
+                            dataType: 'json',
+                            data: {'action': 'change_my_course_view','target': target},
+                            success:function(data)
+                            {
+                                window.location.hash = $(e.target).closest('.card-block').attr('id');
+                                window.location.reload();
+                            },
+                            error:function(data)
+                            {
+                                console.log(data);
+                            }
+                        });
+                    });
+                }
+        );
+
+        /**
+         * Jstree plugin to replace the name of the course on the tree by a link to the course page.
+         * @param options the node options.
+         * @param parent the parent node.
+         */
+        $.jstree.plugins.link_course = function (options, parent) {
+            this.redraw_node = function(obj, deep, callback, force_draw) {
+                obj = parent.redraw_node.call(this, obj, deep, callback, force_draw);
+                if (obj) {
+                    node = this.get_node(obj.id);
+                    if(node && node.data != null) {
+                        if(node.type == "course") {
+                            var icon = $($(obj).children('a').children('i')[0]).prop('outerHTML');
+                            var datas = JSON.parse(node.data);
+                            var url = '{{#uca_url}}/course/view.php, {"id":"COURSE"}{{/uca_url}}';
+                            var html = '<a href="'+url.replace("COURSE", datas.id)+'" >'+icon+node.text+'</a>';
+                            $(obj).children('a').replaceWith(html);
+                        }
+                    }
+                }
+                return obj;
+            };
+        };
+
+        /**
+         * Jstree plugin to replace the name of the bookmark on the tree by a link to the course page.
+         * @param options the node options.
+         * @param parent the parent node.
+         */
+        $.jstree.plugins.link_bookmark = function (options, parent) {
+            this.redraw_node = function(obj, deep, callback, force_draw) {
+                obj = parent.redraw_node.call(this, obj, deep, callback, force_draw);
+                if (obj) {
+                    node = this.get_node(obj.id);
+                    if(node && node.data != null) {
+                        if(node.type == "bookmark") {
+                            var icon = $($(obj).children('a').children('i')[0]).prop('outerHTML');
+                            var url = '{{#uca_url}}/course/view.php, {"id":"COURSE"}{{/uca_url}}';
+                            var html = '<a href="'+url.replace("COURSE", node.data.id)+'" >'+icon+node.text+'</a>';
+                            $(obj).children('a').replaceWith(html);
+                        }
+                    }
+                }
+                return obj;
+            };
+        };
+
+        /**
+         * Jstree plugin used to mark bookmarks in the 'my courses' tree adding a star icon.
+         * @param options the node options.
+         * @param parent the parent node.
+         */
+        $.jstree.plugins.show_bookmark = function (options, parent) {
+            this.redraw_node = function(obj, deep, callback, force_draw) {
+                obj = parent.redraw_node.call(this, obj, deep, callback, force_draw);
+                if (obj) {
+                    var node = this.get_node(jQuery(obj).attr("id"));
+                    if(node) {
+                        datas = JSON.parse(node.data);
+                        if(node.type == "course" && datas.is_bookmark) {
+                            jQuery(obj).append("<i style='margin-left: 10px; font-size: 16px;' class='material-icons'>star_rate</i>");
+                        }
+                    }
+                }
+                return obj;
+            };
+        };
+    </script>
+{{/visible}}
