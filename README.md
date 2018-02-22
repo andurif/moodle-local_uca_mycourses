@@ -7,7 +7,7 @@ Requirements
 ------------
 - Moodle 3.3 (build 2017051500) or later.<br/>
 -> Tests on Moodle 3.3 and 3.4 versions.<br/>
-- Moodle UCA My Courses Block (build 2018020801) to show plugin's informations.
+- Moodle <a href="https://github.com/andurif/moodle-block_uca_mycourses">UCA My Courses Block</a> (build 2018020801) to show plugin's informations.
 - Bootstrap support in your moodle theme.
 - JS Plugin Jstree => https://github.com/vakata/jstree (available in jstree/).
 
@@ -50,4 +50,4 @@ Usages
 
 About us
 ------
-<a href="www.uca.fr">Université Clermont Auvergne</a> - 2018.
+<a href="https://www.uca.fr">Université Clermont Auvergne</a> - 2018.
