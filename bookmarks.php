@@ -32,7 +32,7 @@ require_once('./classes/uca_url_helper.php');
 require_login();
 
 $userctx = context_user::instance($USER->id);
-require_capability('local/uca_mycourses:manage_bookmarks', $userctx);
+//require_capability('local/uca_mycourses:manage_bookmarks', $userctx);
 
 $PAGE->set_context($userctx);
 $PAGE->set_pagelayout('admin');
