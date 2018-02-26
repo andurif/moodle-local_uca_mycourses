@@ -24,7 +24,7 @@
         <ul class="list_view">
             {{#courses}}
                 <li style="list-style-image: url({{#uca_url}}/pix/i/course.png{{/uca_url}});">
-                    <a class='title' href='{{#uca_url}}/course/view.php, {"id":{{id}}}{{/uca_url}}'>{{fullname}}</a>
+                    <a class='title {{^visible}}dimmed{{/visible}}' href='{{#uca_url}}/course/view.php, {"id":{{id}}}{{/uca_url}}'>{{fullname}}</a>
                     {{#is_bookmark}}<i style='margin-left: 10px; font-size: 16px;' class="material-icons">star_rate</i>{{/is_bookmark}}
                 </li>
             {{/courses}}
@@ -135,8 +135,9 @@
                         if(node.type == "course") {
                             var icon = $($(obj).children('a').children('i')[0]).prop('outerHTML');
                             var datas = JSON.parse(node.data);
+                            var a_class = (datas.visible == "1") ? '' : 'class="dimmed"';
                             var url = '{{#uca_url}}/course/view.php, {"id":"COURSE"}{{/uca_url}}';
-                            var html = '<a href="'+url.replace("COURSE", datas.id)+'" >'+icon+node.text+'</a>';
+                            var html = '<a href="'+url.replace("COURSE", datas.id)+'" '+a_class+'>'+icon+node.text+'</a>';
                             $(obj).children('a').replaceWith(html);
                         }
                     }

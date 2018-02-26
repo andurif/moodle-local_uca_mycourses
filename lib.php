@@ -18,7 +18,7 @@
  * Module functions definitions.
  *
  * @package    local_uca_mycourses
- * @author     Université Clermont Auvergne - Anthony Durif, Pierre Raynaud
+ * @author     Université Clermont Auvergne - Anthony Durif
  * @copyright  2018 Université Clermont Auvergne
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -134,23 +134,23 @@ function get_my_courses_list($all = true)
 
     //Get courses from a core moodle function
     $my_courses = enrol_get_my_courses(null, 'fullname ASC,visible DESC,sortorder ASC');
-    $to_exlude = explode(',', get_config('block_uca_mycourses', 'roles_to_exclude'));
+    $to_exclude = explode(',', get_config('block_uca_mycourses', 'roles_to_exclude'));
 
     foreach($my_courses as $key => $course)
     {
         $to_unset = false;
-        if(!$course->visible && !$all) {
+        if(!$course->visible && !can_manage_course($course) && !$all) {
             $to_unset = true;
         }
 
         $course->is_bookmark = course_bookmarked($course);
 
         //We don't want all user courses
-        if(!$all && count($to_exlude) > 0) {
+        if(!$all && count($to_exclude) > 0) {
             $context = context_course::instance($course->id, true);
             $roles = get_user_roles($context, $USER->id, true);
             foreach($roles as $role) {
-                if(in_array($role->roleid, $to_exlude)) {
+                if(in_array($role->roleid, $to_exclude)) {
                     $to_unset = true;
                     break;
                 }
@@ -208,6 +208,18 @@ function put_courses_in_tree($category)
             put_courses_in_tree($child);
         }
     }
+}
+
+/**
+ * Returns if the current user has rights to manage the course given in parameters.
+ * @param $course the course we test.
+ * @return bool true if the user has necessary rights and false in other cases.
+ */
+function can_manage_course($course)
+{
+    $context = context_course::instance($course->id);
+
+    return has_capability('moodle/course:update', $context);
 }
 
 //======================================================================
