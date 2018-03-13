@@ -29,9 +29,20 @@ Installation
 - Téléchargement:
 > Télécharger le zip depuis https://github.com/andurif/moodle-block_uca_mycourses/archive/master.zip, dézipper l'archive dans le dossier blocks/ et renommer le si besoin le dossier en "uca_mycourses".
 
-3. Aller sur la page de notifications pour finaliser l'installation du plugin.
+3. Pour l'utilisation du plugin nous avons été obligé de modifier quelques éléments du code du core de Moodle en modifiant la structure d'une des tables (cf. fichier /db/install.php) ainsi qu'une fonction dans le fichier lib/moodlelib.php. Nous utilisons la table mdl_user_preferences pour stocker les cours mis en favoris.
 
-4. Une fois l'installation terminée, plusieurs options d'administration sont à renseigner:
+> Dans la fonction set_user_preference, la porttion de code suivante est à commenter ou à supprimer (cette portion lance une exception si la taille de la préférence est > 1333 caractères):<br/>
+```
+// Value column maximum length is 1333 characters.
+$value = (string)$value;
+if (core_text::strlen($value) > 1333) {
+    throw new coding_exception('Invalid value in set_user_preference() call, value is is too long for the value column');
+}
+```
+
+4. Aller sur la page de notifications pour finaliser l'installation du plugin.
+
+5. Une fois l'installation terminée, plusieurs options d'administration sont à renseigner:
 
 > Administration du site -> Plugins -> Blocs -> Bloc UCA "Mes cours" -> list_view_limit
 
