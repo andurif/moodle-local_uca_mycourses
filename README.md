@@ -29,9 +29,20 @@ Installation
 - Download way:
 > Download the zip from <a href="https://github.com/andurif/moodle-block_uca_mycourses/archive/master.zip">https://github.com/andurif/moodle-block_uca_mycourses/archive/master.zip</a>, unzip it in blocks/ folder and rename it "uca_mycourses" if necessary.
 
-3. Then visit your Admin Notifications page to complete the installation.
+3. To use the plugin we needed to change some moodle core elements like update the schema of one of the database tables (see /db/install.php file) and update a function in the lib/moodlelib.php file because we use the mdl_user_preferences table to save our bookmarks.
 
-4. Once installed, you should see new administration options:
+> In function set_user_preference, the code fragment below must be deleted or at least in comment (it will throw an exception if the preference value length has more than 1333 characters):<br/>
+```
+// Value column maximum length is 1333 characters.
+$value = (string)$value;
+if (core_text::strlen($value) > 1333) {
+    throw new coding_exception('Invalid value in set_user_preference() call, value is is too long for the value column');
+}
+```
+
+4. Then visit your Admin Notifications page to complete the installation.
+
+5. Once installed, you should see new administration options:
 
 > Site administration -> Plugins -> Blocks -> My courses block -> list_view_limit
 
