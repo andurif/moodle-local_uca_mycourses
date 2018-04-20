@@ -27,8 +27,8 @@
 
 define('AJAX_SCRIPT', true);
 
-require('../../config.php');
-require('./lib.php');
+require_once('../../config.php');
+require_once('./lib.php');
 
 $action  = required_param('action', PARAM_ALPHANUMEXT);
 $PAGE->set_url(new moodle_url('/local/uca_mycourses/ajax.php', array('action' => $action)));

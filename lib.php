@@ -281,7 +281,7 @@ function show_bookmarks()
     }
 
     return (get_user_preferences('uca_mycourses_show_bookmarks', '?') == '?') ? true
-        : (get_user_preferences('uca_mycourses_show_bookmarks') != null);
+        : (get_user_preferences('uca_mycourses_show_bookmarks') != null && get_user_preferences('uca_mycourses_show_bookmarks') != "0");
 }
 
 /**

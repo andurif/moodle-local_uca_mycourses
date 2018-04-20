@@ -77,7 +77,7 @@ echo $renderer->render_from_template('local_uca_mycourses/bookmarks', array(
         'has_courses'       => (count(json_decode(get_my_courses_json_tree())) > 0),
         'json_courses'      => get_my_courses_json_tree(),
         'json_bookmarks'    => get_mybookmarks_json_tree(),
-        'show_bookmarks'    => get_user_preferences('uca_mycourses_show_bookmarks'),
+        'show_bookmarks'    => show_bookmarks(),
         'message'           => $message,
     )
 );
