@@ -2,25 +2,29 @@
     {{#show_bookmarks}}
         {{#json_bookmarks}}
             <div class="jumbotron">
-                <h6 data-toggle="collapse" href="#jstree_my_bookmarks"><strong>{{#str}}my_courses:bookmarks, local_uca_mycourses{{/str}}</strong></h6>
-                <a class="pull-right" href="{{#uca_url}}/local/uca_mycourses/bookmarks.php{{/uca_url}}">{{#str}}bookmarks:manage, local_uca_mycourses{{/str}}</a><br/>
+                <h6 class="sub-mycourses" data-toggle="collapse" href="#jstree_my_bookmarks" aria-expanded="true">{{#str}}my_courses:bookmarks, local_uca_mycourses{{/str}}</h6>
+                <a class="float-right" href="{{#uca_url}}/local/uca_mycourses/bookmarks.php{{/uca_url}}">{{#str}}bookmarks:manage, local_uca_mycourses{{/str}}</a><br/>
                 <input type="hidden" value="{{ json_bookmarks }}" id="json_my_bookmarks">
                 <div id="jstree_my_bookmarks" class="jstree collapse in" style="overflow: auto;" rel="json_my_bookmarks"></div>
             </div>
         {{/json_bookmarks}}
         <hr/>
-        <h6><strong>{{#str}}my_courses:all, local_uca_mycourses{{/str}}</strong></h6>
+        <h6 class="sub-mycourses"><strong>{{#str}}my_courses:all, local_uca_mycourses{{/str}}</strong></h6>
     {{/show_bookmarks}}
 
-    <div class="pull-right">
-        <a href="#" class="change_view" data-target="tree">{{#str}}tree_view, block_uca_mycourses{{/str}}</a> | <a href="#" class="change_view" data-target="list">{{#str}}list_view, block_uca_mycourses{{/str}}</a>
-    </div>
-    <br/>
     {{#json_courses}}
+        <div class="float-right">
+            <a href="#" class="change_view" data-target="tree"><strong>{{#str}}tree_view, block_uca_mycourses{{/str}}</strong></a> | <a href="#" class="change_view" data-target="list">{{#str}}list_view, block_uca_mycourses{{/str}}</a>
+        </div>
+        <br/>
         <input type="hidden" value="{{ json_courses }}" id="json_my_courses">
         <div id="jstree_my_courses" class="jstree" style="overflow: auto;" rel="json_my_courses"></div>
     {{/json_courses}}
     {{^json_courses}}
+        <div class="float-right">
+            <a href="#" class="change_view" data-target="tree">{{#str}}tree_view, block_uca_mycourses{{/str}}</a> | <a href="#" class="change_view" data-target="list"><strong>{{#str}}list_view, block_uca_mycourses{{/str}}</strong></a>
+        </div>
+        <br/>
         <ul class="list_view">
             {{#courses}}
                 <li style="list-style-image: url({{#uca_url}}/pix/i/course.png{{/uca_url}});">
@@ -31,8 +35,17 @@
         </ul>
     {{/json_courses}}
     {{^show_bookmarks}}
-        <a class="pull-right" href="{{#uca_url}}/local/uca_mycourses/bookmarks.php{{/uca_url}}">{{#str}}bookmarks:manage, local_uca_mycourses{{/str}}</a><br/>
+        <a class="float-right" href="{{#uca_url}}/local/uca_mycourses/bookmarks.php{{/uca_url}}">{{#str}}bookmarks:manage, local_uca_mycourses{{/str}}</a><br/>
     {{/show_bookmarks}}
+
+    <hr/>
+    <form id="coursesearch" action="{{#uca_url}}/course/search.php{{/uca_url}}" method="get">
+        <fieldset class="coursesearchbox invisiblefieldset">
+            <label for="coursesearchbox">{{#str}}searchcourses, moodle{{/str}}: </label>
+            <input type="text" id="coursesearchbox" size="50" name="search" value="">
+            <input type="submit" class="btn btn-primary" value="{{#str}}search, moodle{{/str}}">
+        </fieldset>
+    </form>
 
     <script type="application/javascript">
         $(document).ready(
@@ -96,7 +109,7 @@
                         $("#jstree_my_courses").jstree("select_node", "ul > li:first");
                     });
                     $("#jstree_my_bookmarks").on("loaded.jstree", function() {
-                        $("#jstree_my_bookmarks").jstree("open_all");
+                        $("#jstree_my_bookmarks").jstree("select_node", "ul > li:first");
                     });
 
                     //Click to change the view of the bookmarks.
@@ -104,7 +117,7 @@
                         var target = $(e.target).attr('data-target');
                         $.ajax({
                             type: 'POST',
-                            url: '{{#uca_url}}/local/uca_mycourses/ajax.php'{{/uca_url}},
+                        url: '{{#uca_url}}/local/uca_mycourses/ajax.php'{{/uca_url}},
                             dataType: 'json',
                             data: {'action': 'change_my_course_view','target': target},
                             success:function(data)

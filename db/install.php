@@ -18,7 +18,7 @@
  * Plugin install code.
  *
  * @package    local_uca_mycourses
- * @author     Université Clermont Auvergne, Pierre Raynaud, Anthony Durif
+ * @author     Université Clermont Auvergne - Pierre Raynaud, Anthony Durif
  * @copyright  2018 Université Clermont Auvergne
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -35,7 +35,7 @@ function xmldb_local_uca_mycourses_install() {
 
         //We change the 'value' column with type TEXT
         $table = new xmldb_table('user_preferences');
-        $field = new xmldb_field('value', XMLDB_TYPE_TEXT, null, null, true, null, "");
+        $field = new xmldb_field('value', XMLDB_TYPE_TEXT, null, null, true, null, null);
 
         if ($dbman->field_exists($table, $field)) {
             $dbman->change_field_type($table, $field);

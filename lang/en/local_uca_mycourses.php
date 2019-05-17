@@ -18,7 +18,7 @@
  * Plugin lang file: English.
  *
  * @package    local_uca_mycourses
- * @author     Université Clermont Auvergne, Pierre Raynaud, Anthony Durif
+ * @author     Université Clermont Auvergne - Pierre Raynaud, Anthony Durif
  * @copyright  2018 Université Clermont Auvergne
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -29,6 +29,7 @@
 $string['pluginname'] = 'Local plugin "My Courses"';
 $string['my_courses:all'] = 'All my courses';
 $string['my_courses:bookmarks'] = 'My bookmarks';
+
 //======================================================================
 // COURSE BOOKMARKS TRADUCTIONS
 //======================================================================
@@ -50,3 +51,20 @@ $string['bookmarks:validation'] = 'Bookmarks validation';
 $string['bookmarks:validation_ok'] = 'Bookmarks list updated.';
 $string['bookmarks:show_in_block'] = 'Show bookmarks in my courses block';
 $string['bookmarks:access_course'] = 'Go to the course page';
+
+//======================================================================
+// TASKS TRADUCTIONS
+//======================================================================
+$string['taskcleanuplocallogs'] = 'Clean standard and Talend logs from the daily synchronization';
+$string['cleanbookmarks'] = 'Clean "My bookmarks" user preference';
+$string['cleanbookmarks:delete'] = 'Course deleted from the bookmarks list.';
+$string['cleanbookmarks:update'] = 'User preference updated.';
+
+//======================================================================
+// RGPD TRADUCTIONS
+//======================================================================
+$string['privacy:metadata:preference:bookmarksshow'] = 'This plugin store if the user displays or not his bookmarks in the "My courses" block';
+$string['privacy:bookmarksshow:yes'] = 'The user displays his bookmarks.';
+$string['privacy:bookmarksshow:no'] = 'The user does not display his bookmarks.';
+$string['privacy:metadata:preference:bookmarkslist'] = 'This plugin store the user bookmarks in a json string.';
+$string['privacy:bookmarkslist'] = 'List of the user bookmarks (warning this is a json string) : <br/><pre>{$a->json}</pre>';

@@ -18,15 +18,15 @@
  * Plugin version informations.
  *
  * @package    local_uca_mycourses
- * @author     Université Clermont Auvergne, Pierre Raynaud, Anthony Durif
+ * @author     Université Clermont Auvergne - Pierre Raynaud, Anthony Durif
  * @copyright  2018 Université Clermont Auvergne
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2018020802;
+$plugin->version   = 2019051701;
 $plugin->requires  = 2017051500;
 $plugin->cron      = 0;
 $plugin->component = 'local_uca_mycourses';
-$plugin->release   = 'v3.3-r1';
+$plugin->release   = 'v3.6-r1';

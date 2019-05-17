@@ -19,7 +19,7 @@
  * If not courses will be removed from the list.
  *
  * @package    local_uca_mycourses
- * @author     Université Clermont Auvergne, Pierre Raynaud, Anthony Durif
+ * @author     Université Clermont Auvergne - Pierre Raynaud, Anthony Durif
  * @copyright  2018 Université Clermont Auvergne
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -30,20 +30,16 @@ require('../../../config.php');
 
 $jsons = $DB->get_records('user_preferences', array('name' => 'uca_mycourses_bookmarks'), 'userid asc');
 
-foreach ($jsons as $json)
-{
+foreach ($jsons as $json) {
     $update = false;
     $bookmarks = json_decode($json->value);
-    foreach($bookmarks[0]->children as $key => $child)
-    {
-        if($child->type == "bookmark") //we have bookmarks under root node
-        {
+    foreach($bookmarks[0]->children as $key => $child) {
+        if($child->type == "bookmark") { //we have bookmarks under root node
             $delete = false;
             $c = $DB->get_record('course', array('id' => $child->data->id));
             if(!$c) { //the course does not exist anymore => we remove it form the bookmarks list
                 $delete = true;
-            }
-            else { //the course still exists: we check if the user has rights on this course (or his roles are not in the list of roles to exclude)
+            } else { //the course still exists: we check if the user has rights on this course (or his roles are not in the list of roles to exclude)
                 $role = $DB->record_exists('role_assignments', array('userid' => $json->userid, 'contextid' => context_course::instance($c->id)->id));
                 $delete = (!$role);
             }
@@ -52,8 +48,7 @@ foreach ($jsons as $json)
                 array_splice($bookmarks[0]->children, $key, 1);
                 $update = true;
             }
-        }
-        else { //there are folders in the tree
+        } else { //there are folders in the tree
             foreach($child->children as $key2 => $grandchild) {
                 if ($grandchild->type == "bookmark") {
                     $delete = false;
@@ -72,7 +67,6 @@ foreach ($jsons as $json)
                 }
             }
         }
-
     }
 
     if($update) {

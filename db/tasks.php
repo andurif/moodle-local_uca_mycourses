@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Definition of the plugin capabilities.
+ * Plugin tasks.
  *
  * @package    local_uca_mycourses
  * @author     Université Clermont Auvergne - Pierre Raynaud, Anthony Durif
@@ -23,13 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$capabilities = array(
-    'local/uca_mycourses:manage_bookmarks' => array(
-        'riskbitmask'   => RISK_SPAM,
-        'captype'       => 'write',
-        'contextlevel'  => CONTEXT_USER,
-        'archetypes'    => array(
-            'user'  => CAP_ALLOW,
-        )
+$tasks = array(
+    array(
+        'classname' => 'local_uca_mycourses\task\local_clean_bookmarks_task',
+        'blocking'  => 0,
+        'minute'    => '45',
+        'hour'      => '4',
+        'day'       => '*',
+        'dayofweek' => '*',
+        'month'     => '*'
     )
 );

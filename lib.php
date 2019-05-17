@@ -32,8 +32,7 @@
  * @param $all boolean to indicate if we want all the courses or not (some roles has to be excluded).
  * @return string json of courses.
  */
-function get_my_courses_json_tree($all = true)
-{
+function get_my_courses_json_tree($all = true) {
     return json_encode(get_my_courses_tree($all));
 }
 
@@ -42,10 +41,8 @@ function get_my_courses_json_tree($all = true)
  * @param $all boolean to indicate if we want all the courses or not.
  * @return array the tree of courses.
  */
-function get_my_courses_tree($all = true)
-{
+function get_my_courses_tree($all = true) {
     global $CFG;
-    include_once($CFG->libdir.'/coursecatlib.php');
     include_once($CFG->dirroot.'/enrol/locallib.php');
 
     $courses = get_my_courses_list($all);
@@ -53,10 +50,9 @@ function get_my_courses_tree($all = true)
     $categories = array();
     $root = array();
 
-    foreach ($courses as $course)
-    {
+    foreach ($courses as $course) {
         //We create the parent course categories
-        $cat = coursecat::get($course->category, MUST_EXIST,true);
+        $cat = core_course_category::get($course->category, MUST_EXIST,true);
         $parents = array_reverse($cat->get_parents());
 
         if (!isset($categories[$course->category])) {
@@ -71,7 +67,7 @@ function get_my_courses_tree($all = true)
 
             for ($i=0; $i < count($parents); $i++) {
                 if (!isset($categories[$parents[$i]])) {
-                    $parent = coursecat::get($parents[$i], MUST_EXIST,true);
+                    $parent = core_course_category::get($parents[$i], MUST_EXIST,true);
 
                     $categorie = new StdClass();
                     $categorie->id = $parents[$i];
@@ -89,8 +85,9 @@ function get_my_courses_tree($all = true)
 
         //Children course categories
         for ($i=0; $i < count($parents)-1; $i++) {
-            if (!in_array($parents[$i+1], $categories[$parents[$i]]->children))
-                $categories[$parents[$i]]->children[] = $parents[$i+1];
+            if (!in_array($parents[$i+1], $categories[$parents[$i]]->children)) {
+                $categories[$parents[$i]]->children[] = $parents[$i + 1];
+            }
         }
 
         //Where is the root node of the tree
@@ -128,16 +125,14 @@ function get_my_courses_tree($all = true)
  * @param $all boolean to indicate if we want all the courses or not.
  * @return array the courses.
  */
-function get_my_courses_list($all = true)
-{
+function get_my_courses_list($all = true) {
     global $USER;
 
     //Get courses from a core moodle function
     $my_courses = enrol_get_my_courses(null, 'fullname ASC,visible DESC,sortorder ASC');
     $to_exclude = explode(',', get_config('block_uca_mycourses', 'roles_to_exclude'));
 
-    foreach($my_courses as $key => $course)
-    {
+    foreach($my_courses as $key => $course) {
         $to_unset = false;
         if(!$course->visible && !can_manage_course($course) && !$all) {
             $to_unset = true;
@@ -171,8 +166,7 @@ function get_my_courses_list($all = true)
  * @param $categories list of the course category.
  * @return array the category we create in the tree.
  */
-function get_category($id, $categories)
-{
+function get_category($id, $categories) {
     $category = $categories[$id];
     $children = array();
 
@@ -192,8 +186,7 @@ function get_category($id, $categories)
  * Puts our courses in the course categories tree we just create.
  * @param $category the current course category.
  */
-function put_courses_in_tree($category)
-{
+function put_courses_in_tree($category) {
     if (isset($category->courses)) {
         foreach ($category->courses as $course) {
             $cc = new stdClass();
@@ -215,8 +208,7 @@ function put_courses_in_tree($category)
  * @param $course the course we test.
  * @return bool true if the user has necessary rights and false in other cases.
  */
-function can_manage_course($course)
-{
+function can_manage_course($course) {
     $context = context_course::instance($course->id);
 
     return has_capability('moodle/course:update', $context);
@@ -230,8 +222,7 @@ function can_manage_course($course)
  * Check if the current user has course bookmarks json defined in the database.
  * @return boolean true if the current user has bookmarks and false in other cases.
  */
-function user_has_bookmarks()
-{
+function user_has_bookmarks() {
     return (get_user_preferences('uca_mycourses_bookmarks') != null);
 }
 
@@ -239,8 +230,7 @@ function user_has_bookmarks()
  * Check if the current user has course bookmarks json defined in the database with active bookmarks (at least one course has been added to the bookmarks).
  * @return boolean true if the current user has bookmarks and false in other cases.
  */
-function has_active_bookmarks()
-{
+function has_active_bookmarks() {
     if(user_has_bookmarks()) {
         $json_default = sprintf('[{"text":"%s", "type":"root","children":[]}]', get_string('bookmarks:root_folder', 'local_uca_mycourses'));
         $bookmarks_bdd = get_user_preferences('uca_mycourses_bookmarks');
@@ -257,15 +247,16 @@ function has_active_bookmarks()
             }
         }
 
-        foreach ($child->children as $grandchild) {
-            if($grandchild->type == 'bookmark') {
-                return true;
+        if(isset($child->children)) {
+            foreach ($child->children as $grandchild) {
+                if ($grandchild->type == 'bookmark') {
+                    return true;
+                }
             }
         }
 
         return false;
-    }
-    else {
+    } else {
         return false;
     }
 }
@@ -274,8 +265,7 @@ function has_active_bookmarks()
  * Check if we display or not the user's bookmarks in the block. We display them if bookmarks exist and the user has not given cons-indications.
  * @return boolean true if the bookmarks can be display (true by default) and false in other cases
  */
-function show_bookmarks()
-{
+function show_bookmarks() {
     if (!has_active_bookmarks()) {
         return false;
     }
@@ -289,8 +279,7 @@ function show_bookmarks()
  * @return string json string which represents the user's bookmarks used by the jstree plugin.
  *                  (or a default json if the user has no bookmarks).
  */
-function get_mybookmarks_json_tree()
-{
+function get_mybookmarks_json_tree() {
     $json_default = sprintf('[{"text":"%s", "type":"root","children":[]}]', get_string('bookmarks:root_folder', 'local_uca_mycourses'));
 
     return (user_has_bookmarks()) ? get_user_preferences('uca_mycourses_bookmarks') : $json_default;
@@ -301,16 +290,14 @@ function get_mybookmarks_json_tree()
  * @param $course the course to test.
  * @return boolean true if the given course is in the bookmarks' list of the current user.
  */
-function course_bookmarked($course)
-{
+function course_bookmarked($course) {
     if(!user_has_bookmarks()) {
         return false;
     }
 
     $bookmarks = json_decode(get_user_preferences('uca_mycourses_bookmarks'));
 
-    foreach($bookmarks[0]->children as $b)
-    {
+    foreach($bookmarks[0]->children as $b) {
         if($b->type == 'bookmark') {
             if($b->data->id == $course->id) {
                 return true;
@@ -338,8 +325,7 @@ function course_bookmarked($course)
  * By default if we have more than x courses then we use the "tree" view else we use the "list" view.
  * @return string the view type
  */
-function get_uca_mycourses_block_view()
-{
+function get_uca_mycourses_block_view() {
     return (!is_null(get_user_preferences('uca_mycourses_view'))) ? get_user_preferences('uca_mycourses_view')
         : ((count(get_my_courses_list()) > get_config('block_uca_mycourses', 'list_view_limit')) ? 'tree' : 'list');
 }
@@ -348,8 +334,7 @@ function get_uca_mycourses_block_view()
  * Returns the content of the block "My courses".
  * @return string the content of the block.
  */
-function local_uca_mycourses_render_block_output($page)
-{
+function local_uca_mycourses_render_block_output($page) {
     global $CFG;
     require_once($CFG->dirroot.'/local/uca_mycourses/classes/uca_renderer.php');
     require_once($CFG->dirroot.'/local/uca_mycourses/classes/uca_url_helper.php');
@@ -360,18 +345,13 @@ function local_uca_mycourses_render_block_output($page)
     $show_bookmarks = show_bookmarks();
     $json_my_bookmarks = get_mybookmarks_json_tree();
 
-    if($show_bookmarks) {
-        $page->requires->css('/local/uca_mycourses/jstree/dist/themes/default/style.min.css');
-        $page->requires->js('/local/uca_mycourses/jstree/dist/jstree.js', true);
-    }
+    $page->requires->css('/local/uca_mycourses/jstree/dist/themes/default/style.min.css');
+    $page->requires->js('/local/uca_mycourses/jstree/dist/jstree.js', true);
 
     if(get_uca_mycourses_block_view() == 'tree') {
-        $page->requires->css('/local/uca_mycourses/jstree/dist/themes/default/style.min.css');
-        $page->requires->js('/local/uca_mycourses/jstree/dist/jstree.js', true);
         $json_my_courses = get_my_courses_json_tree(false);
         $my_courses = array();
-    }
-    else {
+    } else {
         $my_courses = get_my_courses_list(false);
         $json_my_courses = '';
     }
@@ -385,5 +365,4 @@ function local_uca_mycourses_render_block_output($page)
     ));
 
     return $content;
-
 }

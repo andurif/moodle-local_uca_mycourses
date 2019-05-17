@@ -18,7 +18,7 @@
  * Plugin lang file: French.
  *
  * @package    local_uca_mycourses
- * @author     Université Clermont Auvergne, Pierre Raynaud, Anthony Durif
+ * @author     Université Clermont Auvergne - Pierre Raynaud, Anthony Durif
  * @copyright  2018 Université Clermont Auvergne
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -51,3 +51,20 @@ $string['bookmarks:validation'] = 'Validation des favoris';
 $string['bookmarks:validation_ok'] = 'Liste des favoris mise à jour.';
 $string['bookmarks:show_in_block'] = 'Afficher mes cours mis en favoris sur le bloc "Mes cours"';
 $string['bookmarks:access_course'] = 'Accéder à ce cours';
+
+//======================================================================
+// TRADUCTIONS TACHES PROGRAMMEES
+//======================================================================
+$string['taskcleanuplocallogs'] = 'Nettoyage spécifique des logs standards et talend liés à la synchronisation quotidienne';
+$string['cleanbookmarks'] = 'Nettoyage des préférences "Mes favoris"';
+$string['cleanbookmarks:delete'] = 'Suppression du cours de la liste des favoris.';
+$string['cleanbookmarks:update'] = 'Mise à jour de la préférence utilisateur.';
+
+//======================================================================
+// TRADUCTIONS RGPD
+//======================================================================
+$string['privacy:metadata:preference:bookmarksshow'] = 'Ce plugin enregistre si l\'utilisateur a choisi de faire afficher ou non ses cours mis en favoris sur le bloc "Mes cours".';
+$string['privacy:bookmarksshow:yes'] = 'L\'utilisateur fait afficher ses cours mis en favoris.';
+$string['privacy:bookmarksshow:no'] = 'L\'utilisateur ne fait pas afficher ses cours mis en favoris.';
+$string['privacy:metadata:preference:bookmarkslist'] = 'Ce plugin enregistre la liste des cours mis en favoris par l\'utilisateur sous la forme d\'une chaîne de caractère au format json.';
+$string['privacy:bookmarkslist'] = 'Liste des cours mis en favoris par l\'utilisateur (attention chaîne au format json) : <br/><pre>{$a->json}</pre>';

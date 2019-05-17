@@ -50,7 +50,7 @@ This option will decide since how many courses we display the "My courses" block
 
 > Site administration -> Plugins -> Blocks -> My courses block -> roles_to_exclude
 
-This option will decide roles you want to exclude from the block. If users have this/these role(s) in a course it won't be visible in the block. 
+This option will decide roles you want to exclude from the block. If users have this/these role(s) in a course it won't be visible in the block (and can not be bookmarked). 
 
 Usages
 -----

@@ -92,8 +92,15 @@
                     "check_callback" : function(operation, node, node_parent, node_position, more) {
                         if (operation === "move_node") {
                             if(node.type == "root") return false;
-                            if(node.type == "folder" && node_parent.type != "root") return false;
-                            if(node.type == "bookmark" && node_parent.type == "bookmark") return false;
+                            if(node.type == "category") return false //We try to copy a course category => not possible
+                            if(node.type == "folder" && node_parent.type != "root") return false; //We try to copy a folder elsewhere than under the root node => not possible
+                            if(node.type == "bookmark" && node_parent.type == "bookmark") return false; //We try to copy a bookmark/course under another bookmark => not possible
+                            if(node.type == "course" && node_parent.type == "bookmark") return false; //We try to copy a bookmark/course under another bookmark => not possible
+                            if(is_bookmarked(jQuery.parseJSON(node.data))) return false; //We try to copy a bookmark we have already => not possible
+                            $('.droppable_branch').each(function() { $(this).removeClass('droppable_branch'); });
+                            if(typeof node_parent !== undefined && node_parent.id !== '#') {
+                                $('#' + node_parent.id + '_anchor').addClass('droppable_branch');
+                            }
                             return true;
                         }
                         if(operation === "copy_node") {
@@ -102,6 +109,7 @@
                             if(node_parent.id == "#") return false;  //We try to copy the root node => not possible
                             if(node_parent.type == "bookmark") return false;  //We try to copy a bookmark under another bookmark => not possible
                             if(is_bookmarked(datas)) return false; //We try to copy a bookmark we have already => not possible
+                            $('.droppable_branch').each(function() { $(this).removeClass('droppable_branch'); });
                             return true;
                         }
                         return true;  //Allow all other operations
@@ -136,7 +144,9 @@
             $('.jstree').bind("select_node.jstree", function (e, data) {
                 data.instance.toggle_node(data.node);
             });
-
+            $(document).on("dnd_stop.vakata", function (e, data) {
+                $('.droppable_branch').each(function() { $(this).removeClass('droppable_branch'); });
+            });
 
             /**
              * Save the bookmarks

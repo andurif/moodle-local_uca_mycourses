@@ -48,10 +48,9 @@ try {
         default:
             break;
     }
-}
-catch (Exception $exc) {
-    $reponse->type = 'error';
-    $reponse->message = $exc->getMessage();
+} catch (Exception $exc) {
+    $response->type = 'error';
+    $response->message = $exc->getMessage();
 }
 
 echo json_encode($response);

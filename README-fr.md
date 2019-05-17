@@ -50,11 +50,11 @@ Ce réglage permet de déterminer jusqu'à combien de cours, le bloc utilisera l
 
 > Administration du site -> Plugins -> Blocs -> Bloc UCA "Mes cours" -> roles_to_exclude
 
-Ce réglage permet de sélectionner les roles qui seront ignorés pour afficher les cours d'un utilisateur. Si l'utilisateur possède un de ces rôles dans un cours, ce cours ne sera pas affiché dans le bloc.
+Ce réglage permet de sélectionner les roles qui seront ignorés pour afficher les cours d'un utilisateur. Si l'utilisateur possède un de ces rôles dans un cours, ce cours ne sera pas affiché dans le bloc (et ne pourra pas être ajouté aux cours favoris le cas échéant).
 
 Usages
 -----
-1. Visualisation de la liste de mes cours dans un bloc selon 2 vues différentes (vue en liste ou vue en arbre).
+1. Visualisation de la liste de mes cours dans un bloc selon 2 vues différentes (vue en liste ou vue en arborescence).
 2. Visualisation des cours que j'ai ajouté dans mes favoris. 
 3. Gestion avancée de mes cours mis en favori (classement dans des dossiers, renommage, affichage dans le bloc, mise à jour en cas de suppression). 
 

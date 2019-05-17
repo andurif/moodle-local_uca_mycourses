@@ -62,8 +62,7 @@ if(isset($json)) {
         set_user_preference('uca_mycourses_show_bookmarks', ($show == 'on'));
         $message->type = 'success';
         $message->text = get_string('bookmarks:validation_ok', 'local_uca_mycourses');
-    }
-    catch (Exception $exc) {
+    } catch (Exception $exc) {
         $message->type = 'danger';
         $message->text = $exc->getMessage();
     }
@@ -75,7 +74,7 @@ $renderer = new uca_renderer($PAGE);
 
 echo $renderer->render_from_template('local_uca_mycourses/bookmarks', array(
         'has_courses'       => (count(json_decode(get_my_courses_json_tree())) > 0),
-        'json_courses'      => get_my_courses_json_tree(),
+        'json_courses'      => get_my_courses_json_tree(false),
         'json_bookmarks'    => get_mybookmarks_json_tree(),
         'show_bookmarks'    => show_bookmarks(),
         'message'           => $message,
