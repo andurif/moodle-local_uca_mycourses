@@ -232,7 +232,7 @@ function user_has_bookmarks() {
  */
 function has_active_bookmarks() {
     if(user_has_bookmarks()) {
-        $json_default = sprintf('[{"text":"%s", "type":"root","children":[]}]', get_string('bookmarks:root_folder', 'local_uca_mycourses'));
+        $json_default = sprintf('[{"text":"%s", "type":"root","children":[]}]', get_string('bookmarks_root_folder', 'local_uca_mycourses'));
         $bookmarks_bdd = get_user_preferences('uca_mycourses_bookmarks');
 
         //The json equals the default json used as model <=> no active bookmark
@@ -280,7 +280,7 @@ function show_bookmarks() {
  *                  (or a default json if the user has no bookmarks).
  */
 function get_mybookmarks_json_tree() {
-    $json_default = sprintf('[{"text":"%s", "type":"root","children":[]}]', get_string('bookmarks:root_folder', 'local_uca_mycourses'));
+    $json_default = sprintf('[{"text":"%s", "type":"root","children":[]}]', get_string('bookmarks_root_folder', 'local_uca_mycourses'));
 
     return (user_has_bookmarks()) ? get_user_preferences('uca_mycourses_bookmarks') : $json_default;
 }

@@ -2,14 +2,14 @@
     {{#show_bookmarks}}
         {{#json_bookmarks}}
             <div class="jumbotron">
-                <h6 class="sub-mycourses" data-toggle="collapse" href="#jstree_my_bookmarks" aria-expanded="true">{{#str}}my_courses:bookmarks, local_uca_mycourses{{/str}}</h6>
-                <a class="float-right" href="{{#uca_url}}/local/uca_mycourses/bookmarks.php{{/uca_url}}">{{#str}}bookmarks:manage, local_uca_mycourses{{/str}}</a><br/>
+                <h6 class="sub-mycourses" data-toggle="collapse" href="#jstree_my_bookmarks" aria-expanded="true">{{#str}}my_courses_bookmarks, local_uca_mycourses{{/str}}</h6>
+                <a class="float-right" href="{{#uca_url}}/local/uca_mycourses/bookmarks.php{{/uca_url}}">{{#str}}bookmarks_manage, local_uca_mycourses{{/str}}</a><br/>
                 <input type="hidden" value="{{ json_bookmarks }}" id="json_my_bookmarks">
                 <div id="jstree_my_bookmarks" class="jstree collapse in" style="overflow: auto;" rel="json_my_bookmarks"></div>
             </div>
         {{/json_bookmarks}}
         <hr/>
-        <h6 class="sub-mycourses"><strong>{{#str}}my_courses:all, local_uca_mycourses{{/str}}</strong></h6>
+        <h6 class="sub-mycourses"><strong>{{#str}}my_courses_all, local_uca_mycourses{{/str}}</strong></h6>
     {{/show_bookmarks}}
 
     {{#json_courses}}
@@ -35,7 +35,7 @@
         </ul>
     {{/json_courses}}
     {{^show_bookmarks}}
-        <a class="float-right" href="{{#uca_url}}/local/uca_mycourses/bookmarks.php{{/uca_url}}">{{#str}}bookmarks:manage, local_uca_mycourses{{/str}}</a><br/>
+        <a class="float-right" href="{{#uca_url}}/local/uca_mycourses/bookmarks.php{{/uca_url}}">{{#str}}bookmarks_manage, local_uca_mycourses{{/str}}</a><br/>
     {{/show_bookmarks}}
 
     <hr/>

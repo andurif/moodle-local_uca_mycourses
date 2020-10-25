@@ -27,38 +27,38 @@
 // COURSES TRADUCTIONS
 //======================================================================
 $string['pluginname'] = 'Local plugin "My Courses"';
-$string['my_courses:all'] = 'All my courses';
-$string['my_courses:bookmarks'] = 'My bookmarks';
+$string['my_courses_all'] = 'All my courses';
+$string['my_courses_bookmarks'] = 'My bookmarks';
 
 //======================================================================
 // COURSE BOOKMARKS TRADUCTIONS
 //======================================================================
 $string['uca_mycourses:manage_bookmarks'] = 'Manage my bookmarks list';
-$string['bookmarks:pluginname'] = 'Bookmarks plugin';
-$string['bookmarks:root_folder'] = 'My bookmarks';
-$string['bookmarks:manage'] = 'Manage my bookmarks';
-$string['bookmarks:add'] = 'Add to my bookmarks';
-$string['bookmarks:add_folder'] = 'New folder';
-$string['bookmarks:new_folder'] = 'New folder';
-$string['bookmarks:delete'] = 'Delete from my bookmarks';
-$string['bookmarks:delete_folder'] = 'Delete this folder';
-$string['bookmarks:my_courses'] = 'My courses';
-$string['bookmarks:no_course'] = 'You are not enrolled in any course.';
-$string['bookmarks:list'] = 'Bookmarked courses';
-$string['bookmarks:info'] = 'Changes on your bookmarks will not be considered until you save the tree.';
-$string['bookmarks:confirm'] = 'Save these bookmarks ?';
-$string['bookmarks:validation'] = 'Bookmarks validation';
-$string['bookmarks:validation_ok'] = 'Bookmarks list updated.';
-$string['bookmarks:show_in_block'] = 'Show bookmarks in my courses block';
-$string['bookmarks:access_course'] = 'Go to the course page';
+$string['bookmarks_pluginname'] = 'Bookmarks plugin';
+$string['bookmarks_root_folder'] = 'My bookmarks';
+$string['bookmarks_manage'] = 'Manage my bookmarks';
+$string['bookmarks_add'] = 'Add to my bookmarks';
+$string['bookmarks_add_folder'] = 'New folder';
+$string['bookmarks_new_folder'] = 'New folder';
+$string['bookmarks_delete'] = 'Delete from my bookmarks';
+$string['bookmarks_delete_folder'] = 'Delete this folder';
+$string['bookmarks_my_courses'] = 'My courses';
+$string['bookmarks_no_course'] = 'You are not enrolled in any course.';
+$string['bookmarks_list'] = 'Bookmarked courses';
+$string['bookmarks_info'] = 'Changes on your bookmarks will not be considered until you save the tree.';
+$string['bookmarks_confirm'] = 'Save these bookmarks ?';
+$string['bookmarks_validation'] = 'Bookmarks validation';
+$string['bookmarks_validation_ok'] = 'Bookmarks list updated.';
+$string['bookmarks_show_in_block'] = 'Show bookmarks in my courses block';
+$string['bookmarks_access_course'] = 'Go to the course page';
 
 //======================================================================
 // TASKS TRADUCTIONS
 //======================================================================
 $string['taskcleanuplocallogs'] = 'Clean standard and Talend logs from the daily synchronization';
 $string['cleanbookmarks'] = 'Clean "My bookmarks" user preference';
-$string['cleanbookmarks:delete'] = 'Course deleted from the bookmarks list.';
-$string['cleanbookmarks:update'] = 'User preference updated.';
+$string['cleanbookmarks_delete'] = 'Course deleted from the bookmarks list.';
+$string['cleanbookmarks_update'] = 'User preference updated.';
 
 //======================================================================
 // RGPD TRADUCTIONS

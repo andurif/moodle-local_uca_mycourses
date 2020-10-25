@@ -11,26 +11,26 @@
     <input type="hidden" value="{{ json_bookmarks }}" id="json_bookmarks">
 
     <div class="col-xs-6" style="overflow-y: auto; max-height: 600px;">
-        <h3>{{#str}}bookmarks:my_courses, local_uca_mycourses{{/str}}</h3>
+        <h3>{{#str}}bookmarks_my_courses, local_uca_mycourses{{/str}}</h3>
         <hr/>
         {{#has_courses}}
             <div id="jstree_courses" class="col-xs-11 jstree" rel="json_courses"></div>
         {{/has_courses}}
         {{^has_courses}}
-            <div class="alert alert-danger">{{#str}}bookmarks:no_course, local_uca_mycourses{{/str}}</div>
+            <div class="alert alert-danger">{{#str}}bookmarks_no_course, local_uca_mycourses{{/str}}</div>
         {{/has_courses}}
     </div>
     <div class="col-xs-6" >
-        <h3>{{#str}}bookmarks:list, local_uca_mycourses{{/str}}</h3>
+        <h3>{{#str}}bookmarks_list, local_uca_mycourses{{/str}}</h3>
         <hr/>
 
         <div class="alert alert-warning">
-            <i class="material-icons">warning</i> {{#str}}bookmarks:info, local_uca_mycourses{{/str}}
+            <i class="material-icons">warning</i> {{#str}}bookmarks_info, local_uca_mycourses{{/str}}
         </div>
         <form id="bookmarks_form" action="{{#uca_url}}/local/uca_mycourses/bookmarks.php{{/uca_url}}" method="post">
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" name="show_bookmarks" {{#show_bookmarks}}checked="checked"{{/show_bookmarks}}> {{#str}}bookmarks:show_in_block, local_uca_mycourses{{/str}}
+                    <input class="form-check-input" type="checkbox" name="show_bookmarks" {{#show_bookmarks}}checked="checked"{{/show_bookmarks}}> {{#str}}bookmarks_show_in_block, local_uca_mycourses{{/str}}
                 </label>
             </div>
             <input type="hidden" name="bookmarks_tree_json" id="bookmarks_tree_json" >
@@ -43,8 +43,8 @@
 
     </div>
 
-    <div id="dialog-confirm" title="{{#str}}bookmarks:validation, local_uca_mycourses{{/str}}">
-        <p><i class="material-icons" style="float:left; margin-right:15px;">warning</i>{{#str}}bookmarks:confirm, local_uca_mycourses{{/str}}</p>
+    <div id="dialog-confirm" title="{{#str}}bookmarks_validation, local_uca_mycourses{{/str}}">
+        <p><i class="material-icons" style="float:left; margin-right:15px;">warning</i>{{#str}}bookmarks_confirm, local_uca_mycourses{{/str}}</p>
     </div>
 
 </div>
@@ -221,13 +221,13 @@
                         "separator_before"	: false,
                         "separator_after"	: true,
                         "_disabled"			: false,
-                        "label"				: "{{#str}}bookmarks:add_folder, local_uca_mycourses{{/str}}",
+                        "label"				: "{{#str}}bookmarks_add_folder, local_uca_mycourses{{/str}}",
                         "icon"				: "{{#uca_url}}/pix/t/add.png{{/uca_url}}",
                         "action"			: function (data) {
                             var inst = $.jstree.reference(data.reference), obj = inst.get_node(data.reference);
                             //We create the node with the type 'folder'
                             inst.create_node(obj, {type : "folder"}, "last", function (new_node) {
-                                new_node.text = "{{#str}}bookmarks:new_folder, local_uca_mycourses{{/str}}";
+                                new_node.text = "{{#str}}bookmarks_new_folder, local_uca_mycourses{{/str}}";
                                 new_node.type = "folder";
                                 setTimeout(function () {
                                     inst.edit(new_node);
@@ -250,7 +250,7 @@
                         "separator_before"	: false,
                         "separator_after"	: false,
                         "_disabled"			: false,
-                        "label"				: (node.type == "folder") ? "{{#str}}bookmarks:delete_folder, local_uca_mycourses{{/str}}": "{{#str}}bookmarks:delete, local_uca_mycourses{{/str}}",
+                        "label"				: (node.type == "folder") ? "{{#str}}bookmarks_delete_folder, local_uca_mycourses{{/str}}": "{{#str}}bookmarks_delete, local_uca_mycourses{{/str}}",
                         "icon"				: "{{#uca_url}}/pix/i/delete.png{{/uca_url}}",
                         "action"			: function (data) {
                             var inst = $.jstree.reference(data.reference), obj = inst.get_node(data.reference);
@@ -319,7 +319,7 @@
                     if(node.type == "bookmark") {
                         var urlshow = '{{#uca_url}}/course/view.php, {"id":"COURSE"}{{/uca_url}}';
                         jQuery(obj).append('<i class="info_name"><small>('+node.data.fullname+')</small></i>' +
-                                '<a style="margin-left: 30px;" href="'+urlshow.replace("COURSE", node.data.id)+'"><span class="badge badge-info"> {{#str}}bookmarks:access_course, local_uca_mycourses{{/str}}</span></a>');
+                                '<a style="margin-left: 30px;" href="'+urlshow.replace("COURSE", node.data.id)+'"><span class="badge badge-info"> {{#str}}bookmarks_access_course, local_uca_mycourses{{/str}}</span></a>');
                     }
                 }
             }

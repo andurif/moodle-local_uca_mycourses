@@ -27,38 +27,38 @@
 // TRADUCTIONS PARTIE COURS
 //======================================================================
 $string['pluginname'] = 'Plugin local "Mes Cours"';
-$string['my_courses:all'] = 'Tous mes cours';
-$string['my_courses:bookmarks'] = 'Mes cours mis en favori';
+$string['my_courses_all'] = 'Tous mes cours';
+$string['my_courses_bookmarks'] = 'Mes cours mis en favori';
 
 //======================================================================
 // TRADUCTIONS GESTION DES FAVORIS
 //======================================================================
 $string['uca_mycourses:manage_bookmarks'] = 'Gérer ma liste de cours favoris';
-$string['bookmarks:pluginname'] = 'Mes favoris';
-$string['bookmarks:root_folder'] = 'Mes favoris';
-$string['bookmarks:manage'] = 'Gérer mes favoris';
-$string['bookmarks:add'] = 'Ajouter le(s) cours à mes favoris';
-$string['bookmarks:add_folder'] = 'Créer un dossier';
-$string['bookmarks:new_folder'] = 'Nouveau dossier';
-$string['bookmarks:delete'] = 'Supprimer de mes favoris';
-$string['bookmarks:delete_folder'] = 'Supprimer le dossier';
-$string['bookmarks:my_courses'] = 'Cours auxquels je suis inscrit';
-$string['bookmarks:no_course'] = 'Vous n\'êtes inscrit à aucun cours.';
-$string['bookmarks:list'] = 'Cours mis en favoris';
-$string['bookmarks:info'] = 'Les changements sur vos favoris ne seront pas pris en compte tant que vous ne les avez pas validés.';
-$string['bookmarks:confirm'] = 'Valider les favoris ?';
-$string['bookmarks:validation'] = 'Validation des favoris';
-$string['bookmarks:validation_ok'] = 'Liste des favoris mise à jour.';
-$string['bookmarks:show_in_block'] = 'Afficher mes cours mis en favoris sur le bloc "Mes cours"';
-$string['bookmarks:access_course'] = 'Accéder à ce cours';
+$string['bookmarks_pluginname'] = 'Mes favoris';
+$string['bookmarks_root_folder'] = 'Mes favoris';
+$string['bookmarks_manage'] = 'Gérer mes favoris';
+$string['bookmarks_add'] = 'Ajouter le(s) cours à mes favoris';
+$string['bookmarks_add_folder'] = 'Créer un dossier';
+$string['bookmarks_new_folder'] = 'Nouveau dossier';
+$string['bookmarks_delete'] = 'Supprimer de mes favoris';
+$string['bookmarks_delete_folder'] = 'Supprimer le dossier';
+$string['bookmarks_my_courses'] = 'Cours auxquels je suis inscrit';
+$string['bookmarks_no_course'] = 'Vous n\'êtes inscrit à aucun cours.';
+$string['bookmarks_list'] = 'Cours mis en favoris';
+$string['bookmarks_info'] = 'Les changements sur vos favoris ne seront pas pris en compte tant que vous ne les avez pas validés.';
+$string['bookmarks_confirm'] = 'Valider les favoris ?';
+$string['bookmarks_validation'] = 'Validation des favoris';
+$string['bookmarks_validation_ok'] = 'Liste des favoris mise à jour.';
+$string['bookmarks_show_in_block'] = 'Afficher mes cours mis en favoris sur le bloc "Mes cours"';
+$string['bookmarks_access_course'] = 'Accéder à ce cours';
 
 //======================================================================
 // TRADUCTIONS TACHES PROGRAMMEES
 //======================================================================
 $string['taskcleanuplocallogs'] = 'Nettoyage spécifique des logs standards et talend liés à la synchronisation quotidienne';
 $string['cleanbookmarks'] = 'Nettoyage des préférences "Mes favoris"';
-$string['cleanbookmarks:delete'] = 'Suppression du cours de la liste des favoris.';
-$string['cleanbookmarks:update'] = 'Mise à jour de la préférence utilisateur.';
+$string['cleanbookmarks_delete'] = 'Suppression du cours de la liste des favoris.';
+$string['cleanbookmarks_update'] = 'Mise à jour de la préférence utilisateur.';
 
 //======================================================================
 // TRADUCTIONS RGPD

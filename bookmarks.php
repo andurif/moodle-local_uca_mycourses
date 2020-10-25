@@ -37,7 +37,7 @@ require_capability('local/uca_mycourses:manage_bookmarks', $userctx);
 $PAGE->set_context($userctx);
 $PAGE->set_pagelayout('admin');
 $PAGE->set_url(new moodle_url('/local/uca_mycourses/bookmarks.php'));
-$PAGE->set_title(fullname($USER).' - '.get_string('bookmarks:pluginname', 'local_uca_mycourses'));
+$PAGE->set_title(fullname($USER).' - '.get_string('bookmarks_pluginname', 'local_uca_mycourses'));
 $PAGE->set_heading($PAGE->title);
 $PAGE->navbar->add(get_string('mycourses', 'moodle'));
 $action = optional_param('action', null, PARAM_TEXT);
@@ -61,7 +61,7 @@ if(isset($json)) {
         $show = optional_param('show_bookmarks', '', PARAM_ALPHANUMEXT);
         set_user_preference('uca_mycourses_show_bookmarks', ($show == 'on'));
         $message->type = 'success';
-        $message->text = get_string('bookmarks:validation_ok', 'local_uca_mycourses');
+        $message->text = get_string('bookmarks_validation_ok', 'local_uca_mycourses');
     } catch (Exception $exc) {
         $message->type = 'danger';
         $message->text = $exc->getMessage();

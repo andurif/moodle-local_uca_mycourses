@@ -44,7 +44,7 @@ class local_clean_bookmarks_task extends \core\task\scheduled_task {
         global $DB;
 
         $this->roles_to_exclude = explode(',', get_config('block_uca_mycourses', 'roles_to_exclude'));
-        $json_default = sprintf('[{"text":"%s", "type":"root","children":[]}]', get_string('bookmarks:root_folder', 'local_uca_mycourses'));
+        $json_default = sprintf('[{"text":"%s", "type":"root","children":[]}]', get_string('bookmarks_root_folder', 'local_uca_mycourses'));
         $json_default_prod = '[{"id":"j2_1","text":"Mes Favoris","icon":"https://ent.uca.fr/moodle/pix/i/info.png","data":{},"children":[],"type":"root"}]';
         $lignes = $DB->get_records_sql('SELECT * FROM {user_preferences} WHERE name = ? AND value != ? AND value != ?', array('uca_mycourses_bookmarks', $json_default, $json_default_prod));
 
@@ -70,7 +70,7 @@ class local_clean_bookmarks_task extends \core\task\scheduled_task {
                             //array_splice($bookmarks_json[0]->children, $key, 1);
                             unset($bookmarks_json[0]->children[$key]);
                             $update = true;
-                            mtrace(get_string('cleanbookmarks:delete', 'local_uca_mycourses'));
+                            mtrace(get_string('cleanbookmarks_delete', 'local_uca_mycourses'));
                         }
                     } else {
                         //on traite les dossiers
@@ -90,7 +90,7 @@ class local_clean_bookmarks_task extends \core\task\scheduled_task {
                                     //array_splice($child->children, $key2, 1);
                                     unset($bookmarks_json[0]->children[$key]);
                                     $update = true;
-                                    mtrace(get_string('cleanbookmarks:delete', 'local_uca_mycourses'));
+                                    mtrace(get_string('cleanbookmarks_delete', 'local_uca_mycourses'));
                                 }
                             }
                         }
@@ -101,7 +101,7 @@ class local_clean_bookmarks_task extends \core\task\scheduled_task {
             if ($update) {
                 $ligne->value = json_encode($bookmarks_json);
                 $DB->update_record('user_preferences', $ligne);
-                mtrace(get_string('cleanbookmarks:update', 'local_uca_mycourses') . ' [id=' . $ligne->id . ']');
+                mtrace(get_string('cleanbookmarks_update', 'local_uca_mycourses') . ' [id=' . $ligne->id . ']');
             }
         }
     }

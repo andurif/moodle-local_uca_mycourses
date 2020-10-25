@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2019051701;
+$plugin->version   = 2020102200;
 $plugin->requires  = 2017051500;
 $plugin->cron      = 0;
 $plugin->component = 'local_uca_mycourses';
-$plugin->release   = 'v3.6-r1';
+$plugin->release   = 'v3.9-r1';
