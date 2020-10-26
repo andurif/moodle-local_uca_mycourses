@@ -57,7 +57,7 @@ class provider implements
     public static function get_metadata(collection $items) : collection {
         $items->add_user_preference(self::BOOKMARKS_SHOW, 'privacy:metadata:preference:bookmarksshow');
         $items->add_user_preference(self::BOOKMARKS_LIST, 'privacy:metadata:preference:bookmarkslist');
-        $items->add_user_preference(self::BOOKMARKS_LIST, 'privacy:metadata:preference:bookmarksupdatenames');
+        $items->add_user_preference(self::BOOKMARKS_UPDATE_NAMES, 'privacy:metadata:preference:bookmarksupdatenames');
         return $items;
     }
 
@@ -69,7 +69,7 @@ class provider implements
     public static function export_user_preferences(int $userid) {
         $showpref = get_user_preferences(self::BOOKMARKS_SHOW, null, $userid);
         if (isset($showpref)) {
-            $showprefstring = ($showpref == 'true') ? get_string('privacy:bookmarksshow:yes', 'local_uca_mycourses') : get_string('privacy:bookmarksshow:no', 'local_uca_mycourses');
+            $showprefstring = ($showpref) ? get_string('privacy:bookmarksshow:yes', 'local_uca_mycourses') : get_string('privacy:bookmarksshow:no', 'local_uca_mycourses');
             \core_privacy\local\request\writer::export_user_preference(
                 'local_uca_mycourses',
                 self::BOOKMARKS_SHOW,
@@ -91,10 +91,10 @@ class provider implements
 
         $updatepref = get_user_preferences(self::BOOKMARKS_UPDATE_NAMES, null, $userid);
         if (isset($updatepref)) {
-            $updateprefstring = ($updatepref == 'true') ? get_string('privacy:bookmarksupdatenames:yes', 'local_uca_mycourses') : get_string('privacy:bookmarksupdatenames:no', 'local_uca_mycourses');
+            $updateprefstring = ($updatepref) ? get_string('privacy:bookmarksupdatenames:yes', 'local_uca_mycourses') : get_string('privacy:bookmarksupdatenames:no', 'local_uca_mycourses');
             \core_privacy\local\request\writer::export_user_preference(
                 'local_uca_mycourses',
-                self::BOOKMARKS_SHOW,
+                self::BOOKMARKS_UPDATE_NAMES,
                 $updatepref,
                 $updateprefstring
             );
