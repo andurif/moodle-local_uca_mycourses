@@ -6,32 +6,39 @@
         {{{text}}}
     </div>
 {{/message}}
-<div class="row col-xs-12 bookmarks_page">
+<div class="row col-12 bookmarks_page">
     <input type="hidden" value="{{ json_courses }}" id="json_courses">
     <input type="hidden" value="{{ json_bookmarks }}" id="json_bookmarks">
 
-    <div class="col-xs-6" style="overflow-y: auto; max-height: 600px;">
+    <div class="col-6" style="overflow-y: auto; max-height: 600px;">
         <h3>{{#str}}bookmarks_my_courses, local_uca_mycourses{{/str}}</h3>
         <hr/>
         {{#has_courses}}
-            <div id="jstree_courses" class="col-xs-11 jstree" rel="json_courses"></div>
+            <div id="jstree_courses" class="col-11 jstree" rel="json_courses"></div>
         {{/has_courses}}
         {{^has_courses}}
             <div class="alert alert-danger">{{#str}}bookmarks_no_course, local_uca_mycourses{{/str}}</div>
         {{/has_courses}}
     </div>
-    <div class="col-xs-6" >
+    <div class="col-6" style="overflow-y: auto; max-height: 600px;">
         <h3>{{#str}}bookmarks_list, local_uca_mycourses{{/str}}</h3>
         <hr/>
 
         <div class="alert alert-warning">
             <i class="material-icons">warning</i> {{#str}}bookmarks_info, local_uca_mycourses{{/str}}
         </div>
-        <form id="bookmarks_form" action="{{#uca_url}}/local/uca_mycourses/bookmarks.php{{/uca_url}}" method="post">
-            <div class="form-check">
+        <form style="padding-left: 25px;" class="row" id="bookmarks_form" action="{{#uca_url}}/local/uca_mycourses/bookmarks.php{{/uca_url}}" method="post">
+            <div class="form-check col-8 pull-left">
                 <label class="form-check-label">
                     <input class="form-check-input" type="checkbox" name="show_bookmarks" {{#show_bookmarks}}checked="checked"{{/show_bookmarks}}> {{#str}}bookmarks_show_in_block, local_uca_mycourses{{/str}}
                 </label>
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="update_names" {{#update_names}}checked="checked"{{/update_names}}> {{#str}}bookmarks_update_names, local_uca_mycourses{{/str}}
+                </label>
+                <a class="btn btn-link p-0" role="button" data-container="body" data-toggle="popover" data-placement="right" data-content="<div class='no-overflow'>{{#str}}bookmarks_update_names_help, local_uca_mycourses{{/str}}</div> " data-html="true" tabindex="0" data-trigger="focus" data-original-title="" title="">
+                    <i class="icon fa fa-question-circle text-info fa-fw " title="{{#str}}help, moodle{{/str}}" aria-label="{{#str}}help, moodle{{/str}}"></i>
+                </a>
+                <input type="hidden" name="bookmarks_tree_json" id="bookmarks_tree_json" >
             </div>
             <input type="hidden" name="bookmarks_tree_json" id="bookmarks_tree_json" >
             <div class="pull-right">
@@ -39,7 +46,10 @@
                 <input type="reset" class="btn" value="{{#str}}cancel{{/str}}" id="cancel" >
             </div>
         </form>
-        <div id="jstree_bookmarks" class="col-xs-11 jstree row" rel="json_bookmarks"></div>
+        <br/>
+        <div class="row" style="padding-left: 25px;">
+            <div id="jstree_bookmarks" class="col-11 jstree row" rel="json_bookmarks"></div>
+        </div>
 
     </div>
 
@@ -91,24 +101,24 @@
                     "multiple": true,
                     "check_callback" : function(operation, node, node_parent, node_position, more) {
                         if (operation === "move_node") {
-                            if(node.type == "root") return false;
-                            if(node.type == "category") return false //We try to copy a course category => not possible
-                            if(node.type == "folder" && node_parent.type != "root") return false; //We try to copy a folder elsewhere than under the root node => not possible
-                            if(node.type == "bookmark" && node_parent.type == "bookmark") return false; //We try to copy a bookmark/course under another bookmark => not possible
-                            if(node.type == "course" && node_parent.type == "bookmark") return false; //We try to copy a bookmark/course under another bookmark => not possible
-                            if(is_bookmarked(jQuery.parseJSON(node.data))) return false; //We try to copy a bookmark we have already => not possible
+                            if (node.type == "root") return false;
+                            if (node.type == "category") return false //We try to copy a course category => not possible
+                            if (node.type == "folder" && node_parent.type != "root") return false; //We try to copy a folder elsewhere than under the root node => not possible
+                            if (node.type == "bookmark" && node_parent.type == "bookmark") return false; //We try to copy a bookmark/course under another bookmark => not possible
+                            if (node.type == "course" && node_parent.type == "bookmark") return false; //We try to copy a bookmark/course under another bookmark => not possible
+                            if (node_parent.type == "bookmark" && is_bookmarked(jQuery.parseJSON(node.data))) return false; //We try to copy a bookmark we have already => not possible
                             $('.droppable_branch').each(function() { $(this).removeClass('droppable_branch'); });
-                            if(typeof node_parent !== undefined && node_parent.id !== '#') {
+                            if (typeof node_parent !== undefined && node_parent.id !== '#') {
                                 $('#' + node_parent.id + '_anchor').addClass('droppable_branch');
                             }
                             return true;
                         }
-                        if(operation === "copy_node") {
+                        if (operation === "copy_node") {
                             datas = jQuery.parseJSON(node.data);
-                            if(node.type == "category") return false;  //We try to copy a course category => not possible
-                            if(node_parent.id == "#") return false;  //We try to copy the root node => not possible
-                            if(node_parent.type == "bookmark") return false;  //We try to copy a bookmark under another bookmark => not possible
-                            if(is_bookmarked(datas)) return false; //We try to copy a bookmark we have already => not possible
+                            if (node.type == "category") return false;  //We try to copy a course category => not possible
+                            if (node_parent.id == "#") return false;  //We try to copy the root node => not possible
+                            if (node_parent.type == "bookmark") return false;  //We try to copy a bookmark under another bookmark => not possible
+                            if (is_bookmarked(datas)) return false; //We try to copy a bookmark we have already => not possible
                             $('.droppable_branch').each(function() { $(this).removeClass('droppable_branch'); });
                             return true;
                         }
@@ -199,8 +209,8 @@
                 $(".jstree-leaf").each(function() {
                     treeInst = $("#jstree_bookmarks").jstree(true);
                     tree_node_datas = treeInst.get_node($(this).attr("id")).data;
-                    if(tree_node_datas != null) {
-                        if(tree_node_datas.id == node_datas.id) {
+                    if (tree_node_datas != null) {
+                        if (tree_node_datas.id == node_datas.id) {
                             bookmarked = true;
                             return false;
                         }
@@ -265,17 +275,14 @@
                 };
 
                 //We remove some options of the menu in function of the node.
-                if(node.type == "root")
-                {
+                if (node.type == "root") {
                     delete items.rename;
                     delete items.remove;
                 }
-                if(node.type == "folder")
-                {
+                if (node.type == "folder") {
                     delete items.create;
                 }
-                if(node.type == "bookmark")
-                {
+                if (node.type == "bookmark") {
                     delete items.create;
                 }
 
@@ -296,7 +303,7 @@
              */
             $("#jstree_bookmarks").on("dblclick",".jstree-anchor", function (e) {
                 var inst = $.jstree.reference(this), node = inst.get_node(this);
-                if(node.type == "folder" || node.type == "bookmark") {
+                if (node.type == "folder" || node.type == "bookmark") {
                     setTimeout(function () {
                         inst.edit(node);
                     },300);
@@ -315,8 +322,8 @@
             obj = parent.redraw_node.call(this, obj, deep, callback, force_draw);
             if (obj) {
                 node = this.get_node(obj.id);
-                if(node && node.data != null) {
-                    if(node.type == "bookmark") {
+                if (node && node.data != null) {
+                    if (node.type == "bookmark") {
                         var urlshow = '{{#uca_url}}/course/view.php, {"id":"COURSE"}{{/uca_url}}';
                         jQuery(obj).append('<i class="info_name"><small>('+node.data.fullname+')</small></i>' +
                                 '<a style="margin-left: 30px;" href="'+urlshow.replace("COURSE", node.data.id)+'"><span class="badge badge-info"> {{#str}}bookmarks_access_course, local_uca_mycourses{{/str}}</span></a>');
@@ -337,9 +344,9 @@
             obj = parent.redraw_node.call(this, obj, deep, callback, force_draw);
             if (obj) {
                 var node = this.get_node(jQuery(obj).attr("id"));
-                if(node) {
+                if (node) {
                     datas = JSON.parse(node.data);
-                    if(node.type == "course" && datas.is_bookmarked) {
+                    if (node.type == "course" && datas.is_bookmarked) {
                         jQuery(obj).append("<i style='margin-left: 10px; font-size: 16px;' class='material-icons'>star_rate</i>");
                     }
                 }

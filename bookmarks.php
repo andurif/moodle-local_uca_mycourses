@@ -55,11 +55,14 @@ $json = optional_param('bookmarks_tree_json', null, PARAM_TEXT);
 if(isset($json)) {
     try {
         $message = new stdClass();
-        //We save the json as a user preference in the database
+        // We save the json as a user preference in the database.
         set_user_preference('uca_mycourses_bookmarks', $json);
-        //We save if the user wants to see his bookmarks in the block or not
+        //W e save if the user wants to see his bookmarks in the block or not.
         $show = optional_param('show_bookmarks', '', PARAM_ALPHANUMEXT);
         set_user_preference('uca_mycourses_show_bookmarks', ($show == 'on'));
+        // We save if the user wants his bookmarks names to follow courses names.
+        $updatename = optional_param('update_names', '', PARAM_ALPHANUMEXT);
+        set_user_preference('uca_mycourses_update_bookmarks_names', ($updatename === 'on'));
         $message->type = 'success';
         $message->text = get_string('bookmarks_validation_ok', 'local_uca_mycourses');
     } catch (Exception $exc) {
@@ -77,6 +80,7 @@ echo $renderer->render_from_template('local_uca_mycourses/bookmarks', array(
         'json_courses'      => get_my_courses_json_tree(false),
         'json_bookmarks'    => get_mybookmarks_json_tree(),
         'show_bookmarks'    => show_bookmarks(),
+        'update_names'      => update_bookmarks_names(),
         'message'           => $message,
     )
 );

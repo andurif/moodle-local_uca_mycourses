@@ -51,6 +51,10 @@ $string['bookmarks_validation'] = 'Validation des favoris';
 $string['bookmarks_validation_ok'] = 'Liste des favoris mise à jour.';
 $string['bookmarks_show_in_block'] = 'Afficher mes cours mis en favoris sur le bloc "Mes cours"';
 $string['bookmarks_access_course'] = 'Accéder à ce cours';
+$string['bookmarks_update_names'] = 'Mettre à jour les noms des favoris si les noms des cours changent';
+$string['bookmarks_update_names_help'] = 'Si vous sélectionnez cette option les noms de vos favoris seront automatiquement mis à jour si les intitulés de ces espaces de cours changent.
+                                        Attention, en cas de personnalisation des noms des favoris, ceux-ci seront perdus. Cette mise à jour se fera de manière quotidienne, il se peut donc qu\'il existe un délai dans la mise à jour de ces noms.';
+
 
 //======================================================================
 // TRADUCTIONS TACHES PROGRAMMEES
@@ -68,3 +72,6 @@ $string['privacy:bookmarksshow:yes'] = 'L\'utilisateur fait afficher ses cours m
 $string['privacy:bookmarksshow:no'] = 'L\'utilisateur ne fait pas afficher ses cours mis en favoris.';
 $string['privacy:metadata:preference:bookmarkslist'] = 'Ce plugin enregistre la liste des cours mis en favoris par l\'utilisateur sous la forme d\'une chaîne de caractère au format json.';
 $string['privacy:bookmarkslist'] = 'Liste des cours mis en favoris par l\'utilisateur (attention chaîne au format json) : <br/><pre>{$a->json}</pre>';
+$string['privacy:metadata:preference:bookmarksupdatenames'] = 'Ce plugin enregistre si l\'utilisateur a choisi que les noms de ses favoris soient mis à jour si le nom des cours changent.';
+$string['privacy:bookmarksupdatenames:yes'] = 'L\'utilisateur souhaite que les noms des favoris suivent les noms des cours.';
+$string['privacy:bookmarksupdatenames:no'] = 'L\'utilisateur ne souhaite pas que les noms des favoris suivent les noms des cours.';

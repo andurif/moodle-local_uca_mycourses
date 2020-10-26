@@ -1,5 +1,13 @@
 This file describes changes for the plugin.
 
+=== v3.9-r1 ===
+
+* Add possibility to rearrange bookmarks and folders.
+* Add option/preference to have automatic update of the bookmarks names if the courses names changes.
+* Update translations to avoid to use colons in the string identifiers.
+* Add moodle 3.9 compatibility.
+
+
 === v3.6-r1 ===
 
 * Implementation of new privacy API to become GDPR compliant.

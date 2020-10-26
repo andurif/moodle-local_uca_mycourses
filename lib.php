@@ -132,27 +132,27 @@ function get_my_courses_list($all = true) {
     $my_courses = enrol_get_my_courses(null, 'fullname ASC,visible DESC,sortorder ASC');
     $to_exclude = explode(',', get_config('block_uca_mycourses', 'roles_to_exclude'));
 
-    foreach($my_courses as $key => $course) {
+    foreach ($my_courses as $key => $course) {
         $to_unset = false;
-        if(!$course->visible && !can_manage_course($course) && !$all) {
+        if (!$course->visible && !can_manage_course($course) && !$all) {
             $to_unset = true;
         }
 
         $course->is_bookmark = course_bookmarked($course);
 
         //We don't want all user courses
-        if(!$all && count($to_exclude) > 0) {
+        if (!$all && count($to_exclude) > 0) {
             $context = context_course::instance($course->id, true);
             $roles = get_user_roles($context, $USER->id, true);
-            foreach($roles as $role) {
-                if(in_array($role->roleid, $to_exclude)) {
+            foreach ($roles as $role) {
+                if (in_array($role->roleid, $to_exclude)) {
                     $to_unset = true;
                     break;
                 }
             }
         }
 
-        if($to_unset) {
+        if ($to_unset) {
             unset($my_courses[$key]);
         }
     }
@@ -236,21 +236,21 @@ function has_active_bookmarks() {
         $bookmarks_bdd = get_user_preferences('uca_mycourses_bookmarks');
 
         //The json equals the default json used as model <=> no active bookmark
-        if($bookmarks_bdd === $json_default) {
+        if ($bookmarks_bdd === $json_default) {
             return false;
         }
 
         $array = json_decode($bookmarks_bdd);
         foreach ($array[0]->children as $child) {
-            if($child->type == 'bookmark') {
+            if ($child->type == 'bookmark') {
                 return true;
             }
-        }
 
-        if(isset($child->children)) {
-            foreach ($child->children as $grandchild) {
-                if ($grandchild->type == 'bookmark') {
-                    return true;
+            if (isset($child->children)) {
+                foreach ($child->children as $grandchild) {
+                    if ($grandchild->type == 'bookmark') {
+                        return true;
+                    }
                 }
             }
         }
@@ -275,6 +275,20 @@ function show_bookmarks() {
 }
 
 /**
+ * Check if we the current user want to follow course name in his bookmarks names.
+ * @return boolean true if he wants to and false (by default) in other cases
+ */
+function update_bookmarks_names()
+{
+    if (!has_active_bookmarks()) {
+        return false;
+    }
+
+    return (get_user_preferences('uca_mycourses_update_bookmarks_names') === null) ? false
+        : (get_user_preferences('uca_mycourses_update_bookmarks_names') != null && get_user_preferences('uca_mycourses_update_bookmarks_names') != "0");
+}
+
+/**
  * Returns the user's bookmarks on a json format used by the jstree plugin.
  * @return string json string which represents the user's bookmarks used by the jstree plugin.
  *                  (or a default json if the user has no bookmarks).
@@ -291,20 +305,20 @@ function get_mybookmarks_json_tree() {
  * @return boolean true if the given course is in the bookmarks' list of the current user.
  */
 function course_bookmarked($course) {
-    if(!user_has_bookmarks()) {
+    if (!user_has_bookmarks()) {
         return false;
     }
 
     $bookmarks = json_decode(get_user_preferences('uca_mycourses_bookmarks'));
 
     foreach($bookmarks[0]->children as $b) {
-        if($b->type == 'bookmark') {
+        if ($b->type == 'bookmark') {
             if($b->data->id == $course->id) {
                 return true;
             }
         }
 
-        if($b->type == 'folder') {
+        if ($b->type == 'folder') {
             foreach ($b->children as $c) {
                 if ($c->data->id == $course->id) {
                     return true;
@@ -348,7 +362,7 @@ function local_uca_mycourses_render_block_output($page) {
     $page->requires->css('/local/uca_mycourses/jstree/dist/themes/default/style.min.css');
     $page->requires->js('/local/uca_mycourses/jstree/dist/jstree.js', true);
 
-    if(get_uca_mycourses_block_view() == 'tree') {
+    if (get_uca_mycourses_block_view() == 'tree') {
         $json_my_courses = get_my_courses_json_tree(false);
         $my_courses = array();
     } else {

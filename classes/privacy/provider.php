@@ -45,6 +45,8 @@ class provider implements
     const BOOKMARKS_SHOW = 'uca_mycourses_show_bookmarks';
     /** The user preference corresponding to the user bookmarks' list. */
     const BOOKMARKS_LIST = 'uca_mycourses_bookmarks';
+    /** The user preference corresponding to the user choice to update bookmarks names or not. */
+    const BOOKMARKS_UPDATE_NAMES = 'uca_mycourses_update_bookmarks_names';
 
     /**
      * Returns meta data about this system.
@@ -55,6 +57,7 @@ class provider implements
     public static function get_metadata(collection $items) : collection {
         $items->add_user_preference(self::BOOKMARKS_SHOW, 'privacy:metadata:preference:bookmarksshow');
         $items->add_user_preference(self::BOOKMARKS_LIST, 'privacy:metadata:preference:bookmarkslist');
+        $items->add_user_preference(self::BOOKMARKS_LIST, 'privacy:metadata:preference:bookmarksupdatenames');
         return $items;
     }
 
@@ -83,6 +86,17 @@ class provider implements
                 self::BOOKMARKS_LIST,
                 $listpref,
                 $listprefstring
+            );
+        }
+
+        $updatepref = get_user_preferences(self::BOOKMARKS_UPDATE_NAMES, null, $userid);
+        if (isset($updatepref)) {
+            $updateprefstring = ($updatepref == 'true') ? get_string('privacy:bookmarksupdatenames:yes', 'local_uca_mycourses') : get_string('privacy:bookmarksupdatenames:no', 'local_uca_mycourses');
+            \core_privacy\local\request\writer::export_user_preference(
+                'local_uca_mycourses',
+                self::BOOKMARKS_SHOW,
+                $updatepref,
+                $updateprefstring
             );
         }
     }

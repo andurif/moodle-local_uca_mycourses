@@ -51,6 +51,10 @@ $string['bookmarks_validation'] = 'Bookmarks validation';
 $string['bookmarks_validation_ok'] = 'Bookmarks list updated.';
 $string['bookmarks_show_in_block'] = 'Show bookmarks in my courses block';
 $string['bookmarks_access_course'] = 'Go to the course page';
+$string['bookmarks:update_names'] = 'Update bookmark names if course name change';
+$string['bookmarks:update_names_help'] = 'If selected, bookmarks names will be automatically updated if courses names changed.
+                                        Be careful if you had custom bookmarks names they will be lost. This update is daily so it can take some time to see these changes.';
+
 
 //======================================================================
 // TASKS TRADUCTIONS
@@ -63,8 +67,11 @@ $string['cleanbookmarks_update'] = 'User preference updated.';
 //======================================================================
 // RGPD TRADUCTIONS
 //======================================================================
-$string['privacy:metadata:preference:bookmarksshow'] = 'This plugin store if the user displays or not his bookmarks in the "My courses" block';
+$string['privacy:metadata:preference:bookmarksshow'] = 'This plugin stores if the user displays or not his bookmarks in the "My courses" block';
 $string['privacy:bookmarksshow:yes'] = 'The user displays his bookmarks.';
 $string['privacy:bookmarksshow:no'] = 'The user does not display his bookmarks.';
-$string['privacy:metadata:preference:bookmarkslist'] = 'This plugin store the user bookmarks in a json string.';
+$string['privacy:metadata:preference:bookmarkslist'] = 'This plugins store the user bookmarks in a json string.';
 $string['privacy:bookmarkslist'] = 'List of the user bookmarks (warning this is a json string) : <br/><pre>{$a->json}</pre>';
+$string['privacy:metadata:preference:bookmarksupdatenames'] = 'This plugin stores if the user wants to update his bookmarks\' names if courses\' names changed.';
+$string['privacy:bookmarksupdatenames:yes'] = 'The user wants his bookmarks\' names to follow courses\' names.';
+$string['privacy:bookmarksupdatenames:no'] = 'The user does not want his bookmarks\' names to follow courses\' names.';

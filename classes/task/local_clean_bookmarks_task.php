@@ -51,42 +51,64 @@ class local_clean_bookmarks_task extends \core\task\scheduled_task {
         foreach ($lignes as $ligne) {
             $update = false;
             $bookmarks_json = json_decode($ligne->value);
+            $update_names = (get_user_preferences('uca_mycourses_update_bookmarks_names', '?', $ligne->userid) == "1");
             if (isset($bookmarks_json) && isset($bookmarks_json[0])) {
                 foreach ($bookmarks_json[0]->children as $key => $child) {
                     if ($child->type == 'bookmark') {
-                        //on a un favori à la racine
+                        // We have a bookmark on root node.
                         $delete = false;
                         $course = $DB->get_record('course', array('id' => $child->data->id));
                         if (!$course) {
-                            //le cours n'existe plus il faut donc l'enlever des favoris
+                            // This course does not exist anymore so we remote it from the bookmarks list.
                             $delete = true;
                         } else {
-                            //on regarde si l'utilisateur a encore des accès/rôles sur le cours
+                            // Check if user has manager capabilities on this course.
                             $delete = $this->remove_course_from_bookmarks($course, $ligne);
+                            // Check if course name changed. In this cas we update json datas.
+                            if ($course->fullname != $child->data->fullname) {
+                                $child->data->fullname = $course->fullname;
+                                $update = true;
+                            }
+                            // Check if course name changed and if the user wants his bookmarks names to follow courses names.
+                            if ($course->fullname != $child->text && $update_names) {
+                                $child->text = $course->fullname;
+                                $update = true;
+                            }
                         }
 
                         if ($delete) {
-                            //il faut supprimer le cours des favoris du user
+                            // Delete this course in the user bookmarks list.
                             //array_splice($bookmarks_json[0]->children, $key, 1);
                             unset($bookmarks_json[0]->children[$key]);
                             $update = true;
                             mtrace(get_string('cleanbookmarks_delete', 'local_uca_mycourses'));
                         }
                     } else {
-                        //on traite les dossiers
+                        // Folders.
                         foreach ($child->children as $key2 => $grandchild) {
                             if ($grandchild->type == 'bookmark') {
                                 $delete = false;
                                 $course = $DB->get_record('course', array('id' => $grandchild->data->id));
                                 if (!$course) {
-                                    //le cours n'existe plus il faut donc l'enlever des favoris
+                                    // This course does not exist anymore so we remote it from the bookmarks list.
                                     $delete = true;
                                 } else {
-                                    //on regarde si l'utilisateur a encore des rôles sur le cours
+                                    // Check if user has manager capabilities on this course.
                                     $delete = $this->remove_course_from_bookmarks($course, $ligne);
+                                    // Check if course name changed. In this cas we update json datas.
+                                    if ($course->fullname != $grandchild->data->fullname) {
+                                        $grandchild->data->fullname = $course->fullname;
+                                        $update = true;
+                                    }
+                                    // Check if course name changed and if the user wants his bookmarks names to follow courses names.
+                                    if ($course->fullname != $grandchild->text && $update_names) {
+                                        $grandchild->text = $course->fullname;
+                                        $update = true;
+                                    }
                                 }
 
-                                if ($delete) { //il faut supprimer le cours des favoris du user
+                                if ($delete) {
+                                    // Delete this course in the user bookmarks list.
                                     //array_splice($child->children, $key2, 1);
                                     unset($bookmarks_json[0]->children[$key]);
                                     $update = true;
@@ -115,7 +137,7 @@ class local_clean_bookmarks_task extends \core\task\scheduled_task {
     function remove_course_from_bookmarks($course, $ligne) {
         $delete = (!is_enrolled(\context_course::instance($course->id), $ligne->userid));
 
-        if($delete) {
+        if ($delete) {
             return true;
         }
 
