@@ -51,13 +51,13 @@ $PAGE->requires->js('/local/uca_mycourses/jstree/dist/jstree.js', true);
 
 $message = null;
 $json = optional_param('bookmarks_tree_json', null, PARAM_TEXT);
-//Form is valid
-if(isset($json)) {
+// Form is valid.
+if (isset($json)) {
     try {
         $message = new stdClass();
         // We save the json as a user preference in the database.
         set_user_preference('uca_mycourses_bookmarks', $json);
-        //W e save if the user wants to see his bookmarks in the block or not.
+        // We save if the user wants to see his bookmarks in the block or not.
         $show = optional_param('show_bookmarks', '', PARAM_ALPHANUMEXT);
         set_user_preference('uca_mycourses_show_bookmarks', ($show == 'on'));
         // We save if the user wants his bookmarks names to follow courses names.

@@ -51,8 +51,8 @@ $string['bookmarks_validation'] = 'Bookmarks validation';
 $string['bookmarks_validation_ok'] = 'Bookmarks list updated.';
 $string['bookmarks_show_in_block'] = 'Show bookmarks in my courses block';
 $string['bookmarks_access_course'] = 'Go to the course page';
-$string['bookmarks:update_names'] = 'Update bookmark names if course name change';
-$string['bookmarks:update_names_help'] = 'If selected, bookmarks names will be automatically updated if courses names changed.
+$string['bookmarks_update_names'] = 'Update bookmark names if course name change';
+$string['bookmarks_update_names_help'] = 'If selected, bookmarks names will be automatically updated if courses names changed.
                                         Be careful if you had custom bookmarks names they will be lost. This update is daily so it can take some time to see these changes.';
 
 
