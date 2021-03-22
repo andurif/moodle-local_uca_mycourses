@@ -6,7 +6,7 @@ The block will need the local plugin which will contain all libs and fonctions n
 Requirements
 ------------
 - Moodle 3.3 (build 2017051500) or later.<br/>
--> Tests on Moodle 3.3 to 3.9 versions.<br/>
+-> Tests on Moodle 3.3 to 3.10 versions.<br/>
 - Moodle <a href="https://github.com/andurif/moodle-block_uca_mycourses">UCA My Courses Block</a> (build 2018020801) to show plugin's informations.
 - Bootstrap support in your moodle theme.
 - JS Plugin Jstree => https://github.com/vakata/jstree (available in jstree/).
@@ -61,4 +61,4 @@ Usages
 
 About us
 ------
-<a target="_blank" href="https://www.uca.fr">Université Clermont Auvergne</a> - 2020.
+<a target="_blank" href="https://www.uca.fr">Université Clermont Auvergne</a> - 2021.

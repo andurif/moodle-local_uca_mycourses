@@ -6,7 +6,7 @@ Le bloc est étroitement lié au plugin qui contiendra toutes les librairies et 
 Pré-requis
 ------------
 - Moodle en version 3.3 (build 2017051500) ou plus récente.<br/>
--> Tests effectués sur des versions 3.3 à 3.9.<br/>
+-> Tests effectués sur des versions 3.3 à 3.10.<br/>
 - Bloc "<a href="https://github.com/andurif/moodle-block_uca_mycourses">UCA Mes Cours"</a> (build 2018020801) pour afficher les informations des favoris<br/>
 - Thème qui supporte bootstrap.
 - Plugin JS Jstree => https://github.com/vakata/jstree (joint dans le dossier jstree/)
@@ -61,4 +61,4 @@ Usages
 
 A propos
 ------
-<a target="_blank" href="https://www.uca.fr">Université Clermont Auvergne</a> - 2020.<br/>
+<a target="_blank" href="https://www.uca.fr">Université Clermont Auvergne</a> - 2021.<br/>
