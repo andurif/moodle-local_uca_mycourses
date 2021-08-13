@@ -129,12 +129,18 @@ function get_my_courses_list($all = true) {
     global $USER;
 
     // Get courses from a core moodle function.
-    $my_courses = enrol_get_my_courses(null, 'fullname ASC,visible DESC,sortorder ASC');
+    $my_courses = enrol_get_my_courses('enddate', 'fullname ASC,visible DESC,sortorder ASC');
     $to_exclude = explode(',', get_config('block_uca_mycourses', 'roles_to_exclude'));
 
     foreach ($my_courses as $key => $course) {
         $to_unset = false;
+
+        // Check if the course is visible (unless necessary management capability ?).
         if (!$course->visible && !can_manage_course($course) && !$all) {
+            $to_unset = true;
+        }
+        // Check if the course is finished. If it is we do not display it anymore.
+        if (!get_uca_mycourses_finished_courses_display() && $course->enddate != 0 && $course->enddate < time()) {
             $to_unset = true;
         }
 
@@ -213,6 +219,7 @@ function can_manage_course($course) {
 
     return has_capability('moodle/course:update', $context);
 }
+
 
 //======================================================================
 // COURSE BOOKMARKS FUNCTIONS
@@ -345,6 +352,17 @@ function get_uca_mycourses_block_view() {
 }
 
 /**
+ * Returns if the user wants to display the finished courses or not in his block.
+ * By default the value is set to true.
+ * @return bool the view type
+ */
+function get_uca_mycourses_finished_courses_display()
+{
+    return (key_exists('uca_mycourses_display_finished_courses', get_user_preferences())) ? boolval(get_user_preferences('uca_mycourses_display_finished_courses')) : true;
+}
+
+
+/**
  * Returns the content of the block "My courses".
  * @return string the content of the block.
  */
@@ -369,9 +387,11 @@ function local_uca_mycourses_render_block_output($page) {
         $my_courses = get_my_courses_list(false);
         $json_my_courses = '';
     }
+    $finished_courses = get_uca_mycourses_finished_courses_display();
 
     $content = $renderer->render_from_template('local_uca_mycourses/render_block', array(
         'show_bookmarks'    => $show_bookmarks,
+        'finished_courses'  => $finished_courses,
         'visible'           => (count($my_courses) > 0 || $json_my_courses != null) ? true : null,
         'json_courses'      => $json_my_courses,
         'courses'           => array_values($my_courses),

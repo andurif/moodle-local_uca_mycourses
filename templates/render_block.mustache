@@ -5,7 +5,7 @@
                 <h6 class="sub-mycourses" data-toggle="collapse" href="#jstree_my_bookmarks" aria-expanded="true">{{#str}}my_courses_bookmarks, local_uca_mycourses{{/str}}</h6>
                 <a class="float-right" href="{{#uca_url}}/local/uca_mycourses/bookmarks.php{{/uca_url}}">{{#str}}bookmarks_manage, local_uca_mycourses{{/str}}</a><br/>
                 <input type="hidden" value="{{ json_bookmarks }}" id="json_my_bookmarks">
-                <div id="jstree_my_bookmarks" class="jstree collapse in" style="overflow: auto;" rel="json_my_bookmarks"></div>
+                <div id="jstree_my_bookmarks" class="jstree collapse show" style="overflow: auto;" rel="json_my_bookmarks"></div>
             </div>
         {{/json_bookmarks}}
         <hr/>
@@ -17,12 +17,24 @@
             <a href="#" class="change_view" data-target="tree"><strong>{{#str}}tree_view, block_uca_mycourses{{/str}}</strong></a> | <a href="#" class="change_view" data-target="list">{{#str}}list_view, block_uca_mycourses{{/str}}</a>
         </div>
         <br/>
+        <div class="float-right">
+            <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="show_finished_courses" {{#finished_courses}}checked="checked"{{/finished_courses}}> {{#str}}display_finished_courses, block_uca_mycourses{{/str}}
+            </label>
+        </div>
+        <br/>
         <input type="hidden" value="{{ json_courses }}" id="json_my_courses">
         <div id="jstree_my_courses" class="jstree" style="overflow: auto;" rel="json_my_courses"></div>
     {{/json_courses}}
     {{^json_courses}}
         <div class="float-right">
             <a href="#" class="change_view" data-target="tree">{{#str}}tree_view, block_uca_mycourses{{/str}}</a> | <a href="#" class="change_view" data-target="list"><strong>{{#str}}list_view, block_uca_mycourses{{/str}}</strong></a>
+        </div>
+        <br/>
+        <div class="float-right">
+            <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="show_finished_courses" {{#finished_courses}}checked="checked"{{/finished_courses}}> {{#str}}display_finished_courses, block_uca_mycourses{{/str}}
+            </label>
         </div>
         <br/>
         <ul class="list_view">
@@ -127,6 +139,24 @@
                             },
                             error:function(data)
                             {
+                                console.log(data);
+                            }
+                        });
+                    });
+
+                    // Click to display or hide the finished courses in the block.
+                    $('input[name="show_finished_courses"]').change(function(e) {
+                        var checked = $(this).is(":checked");
+                        $.ajax({
+                            type: 'POST',
+                            url: '{{#uca_url}}/local/uca_mycourses/ajax.php'{{/uca_url}},
+                            dataType: 'json',
+                            data: {'action': 'display_finished_courses','display': checked},
+                            success:function(data) {
+                                window.location.hash = $(e.target).closest('.card-block').attr('id');
+                                window.location.reload();
+                            },
+                            error:function(data) {
                                 console.log(data);
                             }
                         });

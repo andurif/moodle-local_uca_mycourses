@@ -6,7 +6,8 @@
 }
 
 .jstree-default a {
-    white-space:normal !important; height: auto;
+    white-space:normal !important;
+    height: auto;
 }
 
 .jstree-anchor {
@@ -21,12 +22,13 @@
     height: auto !important;
 }
 
-.jstree-leaf a{
+.jstree-leaf a {
     height: auto !important;
 }
 
 .info_name {
-    white-space:normal !important; height: auto;
+    white-space:normal !important;
+    height: auto;
     margin-left: 5px;
     vertical-align: middle;
 }

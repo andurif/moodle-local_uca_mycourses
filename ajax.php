@@ -45,6 +45,13 @@ try {
             $response->type = 'success';
             break;
 
+        case 'display_finished_courses':
+            // We want to change the preference for displaying or not the finished courses.
+            $display  = optional_param('display', true, PARAM_BOOL);
+            set_user_preference('uca_mycourses_display_finished_courses', $display);
+            $response->type = 'success';
+            break;
+
         default:
             break;
     }
