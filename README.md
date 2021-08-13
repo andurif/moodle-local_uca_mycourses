@@ -6,7 +6,7 @@ The block will need the local plugin which will contain all libs and fonctions n
 Requirements
 ------------
 - Moodle 3.3 (build 2017051500) or later.<br/>
--> Tests on Moodle 3.3 to 3.10 versions.<br/>
+-> Tests on Moodle 3.3 to 3.11.0 versions.<br/>
 - Moodle <a href="https://github.com/andurif/moodle-block_uca_mycourses">UCA My Courses Block</a> (build 2018020801) to show plugin's informations.
 - Bootstrap support in your moodle theme.
 - JS Plugin Jstree => https://github.com/vakata/jstree (available in jstree/).
@@ -57,6 +57,7 @@ Usages
 1. Display the list of your course in a block according 2 views (a tree view or a list view).
 2. Display courses you chose to bookmark.
 3. Advanced bookmarks management (filing in folders, renaming, display or not in the block, updates in cases of deletion).
+4. Option to display or not finished courses.
 
 
 About us

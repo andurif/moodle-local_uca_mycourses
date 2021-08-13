@@ -6,7 +6,7 @@ Le bloc est étroitement lié au plugin qui contiendra toutes les librairies et 
 Pré-requis
 ------------
 - Moodle en version 3.3 (build 2017051500) ou plus récente.<br/>
--> Tests effectués sur des versions 3.3 à 3.10.<br/>
+-> Tests effectués sur des versions 3.3 à 3.11.0.<br/>
 - Bloc "<a href="https://github.com/andurif/moodle-block_uca_mycourses">UCA Mes Cours"</a> (build 2018020801) pour afficher les informations des favoris<br/>
 - Thème qui supporte bootstrap.
 - Plugin JS Jstree => https://github.com/vakata/jstree (joint dans le dossier jstree/)
@@ -56,7 +56,8 @@ Usages
 -----
 1. Visualisation de la liste de mes cours dans un bloc selon 2 vues différentes (vue en liste ou vue en arborescence).
 2. Visualisation des cours que j'ai ajouté dans mes favoris. 
-3. Gestion avancée de mes cours mis en favori (classement dans des dossiers, renommage, affichage dans le bloc, mise à jour en cas de suppression). 
+3. Gestion avancée de mes cours mis en favori (classement dans des dossiers, renommage, affichage dans le bloc, mise à jour en cas de suppression).
+4. Option permettant d'afficher ou non les cours dont la date de fin a été atteinte.
 
 
 A propos
