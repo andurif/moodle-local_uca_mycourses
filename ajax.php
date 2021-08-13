@@ -36,9 +36,9 @@ $PAGE->set_url(new moodle_url('/local/uca_mycourses/ajax.php', array('action' =>
 $response = new stdClass();
 
 try {
-    switch($action) {
+    switch ($action) {
         case 'change_my_course_view':
-            //We want to change the view of our courses in the block
+            // We want to change the view of our courses in the block.
             $default_view = get_uca_mycourses_block_view();
             $target  = optional_param('target', $default_view, PARAM_ALPHANUMEXT);
             set_user_preference('uca_mycourses_view', $target);

@@ -51,7 +51,7 @@ function get_my_courses_tree($all = true) {
     $root = array();
 
     foreach ($courses as $course) {
-        //We create the parent course categories
+        // We create the parent course categories.
         $cat = core_course_category::get($course->category, MUST_EXIST,true);
         $parents = array_reverse($cat->get_parents());
 
@@ -83,14 +83,14 @@ function get_my_courses_tree($all = true) {
         $parents = array_reverse($parents);
         $parents[] = $course->category;
 
-        //Children course categories
+        // Children course categories.
         for ($i=0; $i < count($parents)-1; $i++) {
             if (!in_array($parents[$i+1], $categories[$parents[$i]]->children)) {
                 $categories[$parents[$i]]->children[] = $parents[$i + 1];
             }
         }
 
-        //Where is the root node of the tree
+        // Where is the root node of the tree.
         $rootCat = (0 == count($parents)) ? $course->category : $parents[0];
 
         if (!in_array($rootCat, $root)) {
@@ -128,7 +128,7 @@ function get_my_courses_tree($all = true) {
 function get_my_courses_list($all = true) {
     global $USER;
 
-    //Get courses from a core moodle function
+    // Get courses from a core moodle function.
     $my_courses = enrol_get_my_courses(null, 'fullname ASC,visible DESC,sortorder ASC');
     $to_exclude = explode(',', get_config('block_uca_mycourses', 'roles_to_exclude'));
 
@@ -140,7 +140,7 @@ function get_my_courses_list($all = true) {
 
         $course->is_bookmark = course_bookmarked($course);
 
-        //We don't want all user courses
+        // We don't want all user courses.
         if (!$all && count($to_exclude) > 0) {
             $context = context_course::instance($course->id, true);
             $roles = get_user_roles($context, $USER->id, true);
@@ -231,11 +231,11 @@ function user_has_bookmarks() {
  * @return boolean true if the current user has bookmarks and false in other cases.
  */
 function has_active_bookmarks() {
-    if(user_has_bookmarks()) {
+    if (user_has_bookmarks()) {
         $json_default = sprintf('[{"text":"%s", "type":"root","children":[]}]', get_string('bookmarks_root_folder', 'local_uca_mycourses'));
         $bookmarks_bdd = get_user_preferences('uca_mycourses_bookmarks');
 
-        //The json equals the default json used as model <=> no active bookmark
+        // The json equals the default json used as model <=> no active bookmark.
         if ($bookmarks_bdd === $json_default) {
             return false;
         }
@@ -311,7 +311,7 @@ function course_bookmarked($course) {
 
     $bookmarks = json_decode(get_user_preferences('uca_mycourses_bookmarks'));
 
-    foreach($bookmarks[0]->children as $b) {
+    foreach ($bookmarks[0]->children as $b) {
         if ($b->type == 'bookmark') {
             if($b->data->id == $course->id) {
                 return true;

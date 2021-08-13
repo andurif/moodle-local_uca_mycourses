@@ -19,7 +19,7 @@ Installation
 > git clone https://github.com/andurif/moodle-local_uca_mycourses.git local/uca_mycourses
 
 - Téléchargement:
-> Télécharger le zip depuis https://github.com/andurif/moodle-local_uca_mycourses/archive/master.zip, dézipper l'archive dans le dossier local/ et renommer le si besoin le dossier en "uca_mycourses".
+> Télécharger le zip depuis <a href="https://github.com/andurif/moodle-local_uca_mycourses/archive/refs/heads/master.zip" target="_blank">https://github.com/andurif/moodle-local_uca_mycourses/archive/refs/heads/master.zip </a>, dézipper l'archive dans le dossier local/ et renommer le si besoin le dossier en "uca_mycourses".
   
 2. Installation du bloc
 
@@ -27,7 +27,7 @@ Installation
 > git clone https://github.com/andurif/moodle-block_uca_mycourses.git blocks/uca_mycourses
 
 - Téléchargement:
-> Télécharger le zip depuis https://github.com/andurif/moodle-block_uca_mycourses/archive/master.zip, dézipper l'archive dans le dossier blocks/ et renommer le si besoin le dossier en "uca_mycourses".
+> Télécharger le zip depuis <a href="https://github.com/andurif/moodle-block_uca_mycourses/archive/refs/heads/master.zip" target="_blank">https://github.com/andurif/moodle-block_uca_mycourses/archive/refs/heads/master.zip </a>, dézipper l'archive dans le dossier blocks/ et renommer le si besoin le dossier en "uca_mycourses".
 
 3. Pour l'utilisation du plugin nous avons été obligé de modifier quelques éléments du code du core de Moodle en modifiant la structure d'une des tables (cf. fichier /db/install.php) ainsi qu'une fonction dans le fichier lib/moodlelib.php. Nous utilisons la table mdl_user_preferences pour stocker les cours mis en favoris.
 

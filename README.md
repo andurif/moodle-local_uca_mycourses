@@ -19,7 +19,7 @@ Installation
 > git clone https://github.com/andurif/moodle-local_uca_mycourses.git local/uca_mycourses
 
 - Download way:
-> Download the zip from <a href="https://github.com/andurif/moodle-local_uca_mycourses/archive/master.zip">https://github.com/andurif/moodle-local_uca_mycourses/archive/master.zip</a>, unzip it in local/ folder and rename it "uca_mycourses" if necessary.
+> Download the zip from <a href="https://github.com/andurif/moodle-local_uca_mycourses/archive/refs/heads/master.zip">https://github.com/andurif/moodle-local_uca_mycourses/archive/refs/heads/master.zip </a>, unzip it in local/ folder and rename it "uca_mycourses" if necessary.
   
 2. Block installation
 
@@ -27,7 +27,7 @@ Installation
 > git clone https://github.com/andurif/moodle-block_uca_mycourses.git blocks/uca_mycourses
 
 - Download way:
-> Download the zip from <a href="https://github.com/andurif/moodle-block_uca_mycourses/archive/master.zip">https://github.com/andurif/moodle-block_uca_mycourses/archive/master.zip</a>, unzip it in blocks/ folder and rename it "uca_mycourses" if necessary.
+> Download the zip from <a href="https://github.com/andurif/moodle-block_uca_mycourses/archive/refs/heads/master.zip">https://github.com/andurif/moodle-block_uca_mycourses/archive/refs/heads/master.zip </a>, unzip it in blocks/ folder and rename it "uca_mycourses" if necessary.
 
 3. To use the plugin we needed to change some moodle core elements like update the schema of one of the database tables (see /db/install.php file) and update a function in the lib/moodlelib.php file because we use the mdl_user_preferences table to save our bookmarks.
 
