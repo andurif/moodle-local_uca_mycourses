@@ -7,10 +7,10 @@
 (function (factory) {
 	"use strict";
 	if (typeof define === 'function' && define.amd) {
-		define('jstree.dnd', ['jquery','jstree'], factory);
+		define('jstree.dnd', ['jquery','./jstree.js'], factory);
 	}
 	else if(typeof exports === 'object') {
-		factory(require('jquery'), require('jstree'));
+		factory(require('jquery'), require('./jstree.js'));
 	}
 	else {
 		factory(jQuery, jQuery.jstree);
@@ -181,6 +181,18 @@
 			marker = $('<div id="jstree-marker">&#160;</div>').hide(); //.appendTo('body');
 
 		$(document)
+			.on('dragover.vakata.jstree', function (e) {
+				if (elm) {
+					$.vakata.dnd._trigger('move', e, { 'helper': $(), 'element': elm, 'data': drg });
+				}
+			})
+			.on('drop.vakata.jstree', function (e) {
+				if (elm) {
+					$.vakata.dnd._trigger('stop', e, { 'helper': $(), 'element': elm, 'data': drg });
+					elm = null;
+					drg = null;
+				}
+			})
 			.on('dnd_start.vakata.jstree', function (e, data) {
 				lastmv = false;
 				lastev = false;
@@ -206,7 +218,7 @@
 					ref = false,
 					off = false,
 					rel = false,
-					tmp, l, t, h, p, i, o, ok, t1, t2, op, ps, pr, ip, tm, is_copy, pn;
+					tmp, l, t, h, p, i, o, ok, t1, t2, op, ps, pr, ip, tm, is_copy, pn, c;
 				// if we are over an instance
 				if(ins && ins._data && ins._data.dnd) {
 					marker.attr('class', 'jstree-' + ins.get_theme() + ( ins.settings.core.themes.responsive ? ' jstree-dnd-responsive' : '' ));
@@ -256,6 +268,7 @@
 										t = off.top;
 										p = ins.get_parent(ref);
 										i = ref.parent().index();
+										c = 'jstree-below';
 										break;
 									case 'i':
 										ip = ins.settings.dnd.inside_pos;
@@ -264,12 +277,14 @@
 										t = off.top + h / 2 + 1;
 										p = tm.id;
 										i = ip === 'first' ? 0 : (ip === 'last' ? tm.children.length : Math.min(ip, tm.children.length));
+										c = 'jstree-inside';
 										break;
 									case 'a':
 										l = off.left - 6;
 										t = off.top + h;
 										p = ins.get_parent(ref);
 										i = ref.parent().index() + 1;
+										c = 'jstree-above';
 										break;
 								}
 								ok = true;
@@ -302,6 +317,7 @@
 									}
 									lastmv = { 'ins' : ins, 'par' : p, 'pos' : v === 'i' && ip === 'last' && i === 0 && !ins.is_loaded(tm) ? 'last' : i };
 									marker.css({ 'left' : l + 'px', 'top' : t + 'px' }).show();
+									marker.removeClass('jstree-above jstree-inside jstree-below').addClass(c);
 									data.helper.find('.jstree-icon').first().removeClass('jstree-er').addClass('jstree-ok');
 									if (data.event.originalEvent && data.event.originalEvent.dataTransfer) {
 										data.event.originalEvent.dataTransfer.dropEffect = is_copy ? 'copy' : 'move';
@@ -319,7 +335,7 @@
 				lastmv = false;
 				data.helper.find('.jstree-icon').removeClass('jstree-ok').addClass('jstree-er');
 				if (data.event.originalEvent && data.event.originalEvent.dataTransfer) {
-					data.event.originalEvent.dataTransfer.dropEffect = 'none';
+					//data.event.originalEvent.dataTransfer.dropEffect = 'none';
 				}
 				marker.hide();
 			})
@@ -380,7 +396,7 @@
 	// helpers
 	(function ($) {
 		$.vakata.html = {
-			div : $('<div />'),
+			div : $('<div></div>'),
 			escape : function (str) {
 				return $.vakata.html.div.text(str).html();
 			},
@@ -447,6 +463,7 @@
 					scroll_i: false,
 					is_touch: false
 				};
+				elm = null;
 				$(document).off("mousemove.vakata.jstree touchmove.vakata.jstree", $.vakata.dnd.drag);
 				$(document).off("mouseup.vakata.jstree touchend.vakata.jstree", $.vakata.dnd.stop);
 			},
